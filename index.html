@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multiverse Haven | Special Edition</title>
+  <title>Multiverse Haven | Ultra Edition 💖</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- Anime.js for micro-animations -->
+  <!-- External JS Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
   <style>
     :root {
       --bg-peach: #FFF5F0;
-      --card-glass: rgba(255, 255, 255, 0.75);
-      --card-border: rgba(255, 182, 193, 0.4);
+      --card-glass: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(255, 182, 193, 0.5);
       --accent-pink: #FF82A9;
       --accent-warm: #FFB3C6;
       --accent-gold: #FFD166;
@@ -27,12 +27,7 @@
       --font-main: 'Plus Jakarta Sans', sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg-peach);
       color: var(--text-dark);
@@ -42,418 +37,309 @@
       transition: background 0.8s ease;
     }
 
-    /* Ambient Dim Layer for Candle Ritual */
+    /* Ambient Dim Layer */
     #ambient-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(15, 10, 25, 0.85);
-      z-index: 900;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1s ease;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(15, 10, 25, 0.88); z-index: 900; opacity: 0;
+      pointer-events: none; transition: opacity 0.8s ease;
     }
+    body.dimmed #ambient-overlay { opacity: 1; pointer-events: auto; }
 
-    body.dimmed #ambient-overlay {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* Web Shooter Cursor Trail Canvas */
+    /* Web Shooter Cursor Canvas */
     #web-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 999;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 999;
     }
 
-    /* App Container Layout */
     .app-container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-      position: relative;
-      z-index: 10;
+      max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;
+      display: flex; flex-direction: column; gap: 2.5rem; position: relative; z-index: 10;
     }
 
-    /* Header Section */
+    /* Header Banner */
     .header-banner {
-      text-align: center;
-      position: relative;
-      padding: 2rem;
-      background: var(--card-glass);
-      backdrop-filter: blur(10px);
-      border-radius: 24px;
-      border: 2px dashed var(--accent-pink);
+      text-align: center; position: relative; padding: 2.5rem;
+      background: var(--card-glass); backdrop-filter: blur(10px);
+      border-radius: 24px; border: 2px dashed var(--accent-pink);
     }
+    .header-banner h1 { font-family: var(--font-handwriting); font-size: 3.8rem; color: var(--accent-pink); }
+    .header-banner p { font-family: var(--font-playful); font-size: 1.2rem; margin-top: 0.5rem; }
 
-    .header-banner h1 {
-      font-family: var(--font-handwriting);
-      font-size: 3.5rem;
-      color: var(--accent-pink);
-      line-height: 1.1;
-    }
+    /* Floating Stickers */
+    .sticker { position: absolute; user-select: none; pointer-events: none; }
 
-    .header-banner p {
-      font-family: var(--font-playful);
-      font-size: 1.2rem;
-      margin-top: 0.5rem;
-    }
-
-    /* Floating Sticker Badges */
-    .sticker {
-      position: absolute;
-      user-select: none;
-      pointer-events: none;
-      animation: floatBadge 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatBadge {
-      0% { transform: translateY(0px) rotate(-3deg); }
-      100% { transform: translateY(-10px) rotate(4deg); }
-    }
-
-    /* Interactive Section Cards */
+    /* Haven Modules Wrapper */
     .haven-card {
-      background: var(--card-glass);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 1.8rem;
-      box-shadow: 0 8px 32px rgba(255, 130, 169, 0.1);
-      position: relative;
+      background: var(--card-glass); backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border); border-radius: 20px; padding: 1.8rem;
+      box-shadow: 0 8px 32px rgba(255, 130, 169, 0.1); position: relative;
     }
-
     .card-title {
-      font-family: var(--font-playful);
-      font-size: 1.5rem;
-      color: var(--text-dark);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      font-family: var(--font-playful); font-size: 1.5rem; color: var(--text-dark);
+      margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.5rem;
     }
 
-    /* Cake & Candle Interactive Ritual */
-    .cake-ritual-box {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.5rem;
-      position: relative;
-      z-index: 950;
-    }
+    /* Module 1: Candle Ritual & Wish Jar */
+    .cake-ritual-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; position: relative; z-index: 950; }
+    .cake-container { position: relative; width: 220px; height: 160px; cursor: pointer; }
+    .flork-baker { font-size: 3.5rem; position: absolute; top: -45px; left: 50%; transform: translateX(-50%); }
+    .cake-body { width: 100%; height: 110px; background: #FFF0F5; border: 3px solid #FFB3C6; border-radius: 16px; position: absolute; bottom: 0; box-shadow: inset 0 -10px 0 #FF82A9; }
+    .candle { width: 14px; height: 40px; background: repeating-linear-gradient(45deg, #FFF, #FFF 5px, #FF82A9 5px, #FF82A9 10px); position: absolute; top: 15px; left: 50%; transform: translateX(-50%); border-radius: 4px; }
+    .flame { width: 16px; height: 24px; background: orange; border-radius: 50% 50% 20% 20%; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); box-shadow: 0 0 15px #FFD166, 0 0 25px orange; animation: flicker 0.6s infinite alternate; }
+    @keyframes flicker { 0% { transform: translateX(-50%) scale(1); } 100% { transform: translateX(-50%) scale(1.15); } }
+    .candle.extinguished .flame { display: none; }
+    .wish-jar { width: 90px; height: 110px; border: 3px solid rgba(255,255,255,0.9); border-radius: 12px 12px 20px 20px; background: rgba(255,255,255,0.3); display: flex; align-items: flex-end; justify-content: center; flex-wrap: wrap; padding: 4px; gap: 2px; }
 
-    .cake-container {
-      position: relative;
-      width: 220px;
-      height: 180px;
-      cursor: pointer;
-    }
+    /* Module 2: Virtual Pet Companion */
+    .pet-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; }
+    .pet-avatar { font-size: 5rem; cursor: pointer; transition: transform 0.2s ease; }
+    .pet-avatar:hover { transform: scale(1.1) rotate(5deg); }
+    .pet-speech { font-family: var(--font-handwriting); font-size: 1.6rem; background: #FFF; padding: 0.5rem 1rem; border-radius: 15px; border: 1px solid var(--accent-pink); }
 
-    .flork-baker {
-      font-size: 4rem;
-      position: absolute;
-      top: -45px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+    /* Module 3: Interactive Sunflower Tracking Canvas */
+    #sunflower-canvas { width: 100%; height: 150px; background: rgba(255,255,255,0.4); border-radius: 12px; }
 
-    .cake-body {
-      width: 100%;
-      height: 120px;
-      background: #FFF0F5;
-      border: 3px solid #FFB3C6;
-      border-radius: 16px 16px 8px 8px;
-      position: absolute;
-      bottom: 0;
-      box-shadow: inset 0 -10px 0 #FF82A9;
-    }
+    /* Module 4: Scratch Card Canvas */
+    .scratch-container { position: relative; width: 100%; height: 120px; border-radius: 12px; overflow: hidden; }
+    .scratch-reveal { position: absolute; width: 100%; height: 100%; background: #FFE5EC; display: flex; align-items: center; justify-content: center; font-family: var(--font-handwriting); font-size: 1.8rem; color: var(--accent-pink); font-weight: bold; }
+    #scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; }
 
-    .candle {
-      width: 14px;
-      height: 45px;
-      background: repeating-linear-gradient(45deg, #FFF, #FFF 5px, #FF82A9 5px, #FF82A9 10px);
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 4px;
-    }
+    /* Module 6: Banter Flip Cards */
+    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .flip-card { height: 120px; perspective: 1000px; cursor: pointer; }
+    .flip-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 1rem; font-family: var(--font-playful); }
+    .flip-front { background: #FFF; border: 2px dashed var(--accent-pink); }
+    .flip-back { background: var(--accent-pink); color: white; transform: rotateY(180deg); }
 
-    .flame {
-      width: 16px;
-      height: 24px;
-      background: orange;
-      border-radius: 50% 50% 20% 20%;
-      position: absolute;
-      top: -24px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: 0 0 15px #FFD166, 0 0 25px orange;
-      animation: flicker 0.6s infinite alternate;
-    }
+    /* Module 7: Stress Bubble Wrap */
+    .bubble-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.5rem; max-width: 400px; margin: 0 auto; }
+    .bubble { width: 100%; aspect-ratio: 1; background: rgba(255, 130, 169, 0.3); border-radius: 50%; cursor: pointer; transition: transform 0.1s ease; }
+    .bubble.popped { background: rgba(0,0,0,0.1); transform: scale(0.85); box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); }
 
-    @keyframes flicker {
-      0% { transform: translateX(-50%) scale(1); }
-      100% { transform: translateX(-50%) scale(1.15); }
-    }
+    /* Scrapbook Memory Grid & Stamps */
+    .pinboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+    .polaroid-frame { background: #FFF; padding: 10px 10px 20px 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transform: rotate(-2deg); transition: transform 0.3s ease; cursor: pointer; }
+    .polaroid-frame:nth-child(even) { transform: rotate(2deg); }
+    .polaroid-frame:hover { transform: scale(1.05) rotate(0deg); z-index: 5; }
+    .polaroid-img { width: 100%; height: 150px; background: #F7F7F7; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; border-radius: 4px; }
+    .polaroid-caption { font-family: var(--font-handwriting); font-size: 1.4rem; text-align: center; margin-top: 8px; color: #444; }
+    .stamp-border { border: 6px solid #FFF; outline: 2px dashed #FFB3C6; outline-offset: -3px; }
 
-    .candle.extinguished .flame {
-      display: none;
-    }
-
-    /* Scrapbook Memory Pinboard */
-    .pinboard-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .polaroid-frame {
-      background: #FFF;
-      padding: 12px 12px 24px 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      transform: rotate(-2deg);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .polaroid-frame:nth-child(even) {
-      transform: rotate(3deg);
-    }
-
-    .polaroid-frame:hover {
-      transform: scale(1.05) rotate(0deg);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      z-index: 5;
-    }
-
-    .polaroid-img {
-      width: 100%;
-      height: 180px;
-      background-color: #F0F0F0;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-    }
-
-    .polaroid-caption {
-      font-family: var(--font-handwriting);
-      font-size: 1.4rem;
-      text-align: center;
-      margin-top: 10px;
-      color: #444;
-    }
-
-    /* Stamp Edge Design Style */
-    .stamp-border {
-      border: 8px solid white;
-      outline: 2px dashed #FFB3C6;
-      outline-offset: -4px;
-      background: #FFF;
-    }
-
-    /* Action Buttons */
-    .haven-btn {
-      background: var(--accent-pink);
-      color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      font-family: var(--font-playful);
-      font-size: 1rem;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(255, 130, 169, 0.3);
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .haven-btn:hover {
-      transform: translateY(-2px);
-      background: #FF6594;
-    }
-
-    /* Wish Jar Display */
-    .wish-jar {
-      width: 100px;
-      height: 130px;
-      border: 3px solid rgba(255,255,255,0.8);
-      border-radius: 12px 12px 20px 20px;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(4px);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      padding: 5px;
-    }
-
-    .wish-counter {
-      font-family: var(--font-playful);
-      font-size: 0.9rem;
-      color: var(--accent-pink);
-      margin-top: 0.5rem;
-    }
+    /* UI Controls */
+    .haven-btn { background: var(--accent-pink); color: white; border: none; padding: 0.7rem 1.4rem; font-family: var(--font-playful); font-size: 0.95rem; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 130, 169, 0.3); transition: transform 0.2s ease; }
+    .haven-btn:hover { transform: translateY(-2px); }
   </style>
 </head>
 <body>
 
-  <!-- Ambient Overlay for Dimming Lights -->
   <div id="ambient-overlay"></div>
-
-  <!-- Cursor Trail Web Canvas -->
   <canvas id="web-canvas"></canvas>
 
   <div class="app-container">
 
-    <!-- Header Banner with Flork Aesthetic -->
+    <!-- Header Banner -->
     <header class="header-banner">
-      <span class="sticker" style="top:-15px; left:20px; font-size:2rem;">🌸</span>
+      <span class="sticker" style="top:-10px; left:20px; font-size:2rem;">🌸</span>
       <span class="sticker" style="bottom:-10px; right:30px; font-size:2rem;">🎈</span>
-      <h1>Welcome to Multiverse Haven 💖</h1>
-      <p>A little cozy corner built just for you!</p>
+      <h1>Multiverse Haven 💖</h1>
+      <p>A personalized cozy digital playground</p>
     </header>
 
-    <!-- Interactive Candle Wish Ritual Section -->
+    <!-- Module 1: Wish Candle Ritual -->
     <section class="haven-card">
-      <h2 class="card-title">🎂 Wish Flower Cake Ritual</h2>
+      <h2 class="card-title">🎂 Module 1: Wish Flower Candle Ritual</h2>
       <div class="cake-ritual-box">
-        <p style="font-family: var(--font-playful);">Tap the candle to blow it out and make a wish!</p>
-        
+        <p style="font-family: var(--font-playful);">Tap the cake to extinguish the candle & save a wish!</p>
         <div class="cake-container" id="cake-trigger">
           <div class="flork-baker">⸜(｡˃ ᵕ ˂ )⸝</div>
           <div class="cake-body">
-            <div class="candle" id="main-candle">
-              <div class="flame"></div>
-            </div>
+            <div class="candle" id="main-candle"><div class="flame"></div></div>
           </div>
         </div>
-
         <div style="display:flex; flex-direction:column; align-items:center;">
           <div class="wish-jar" id="wish-jar"></div>
-          <div class="wish-counter" id="wish-count">Wishes Collected: 0</div>
+          <p style="font-family: var(--font-playful); font-size:0.9rem; margin-top:5px;" id="wish-count">Wishes Collected: 0</p>
         </div>
-
-        <button class="haven-btn" id="dim-toggle-btn">💡 Toggle Dim Lights</button>
+        <button class="haven-btn" id="dim-toggle-btn">💡 Toggle Dim Ambient Lights</button>
       </div>
     </section>
 
-    <!-- Scrapbook Memory Pinboard -->
+    <!-- Module 2: Virtual Pet Companion -->
     <section class="haven-card">
-      <h2 class="card-title">📌 Memory Scrapbook</h2>
+      <h2 class="card-title">🌻 Module 2: Virtual Pet Companion ("Sunny")</h2>
+      <div class="pet-box">
+        <div class="pet-speech" id="pet-speech">"Tap me or feed me some chai!"</div>
+        <div class="pet-avatar" id="pet-avatar">🌻</div>
+        <div style="display:flex; gap:0.5rem;">
+          <button class="haven-btn" onclick="feedPet('☕ Chai')">☕ Feed Chai</button>
+          <button class="haven-btn" onclick="feedPet('🍪 Cookie')">🍪 Feed Cookie</button>
+          <button class="haven-btn" onclick="feedPet('☀️ Sun')">☀️ Give Sun</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module 3: Sunflower Cursor Tracker -->
+    <section class="haven-card">
+      <h2 class="card-title">🎨 Module 3: Sunflower Tracking Canvas</h2>
+      <canvas id="sunflower-canvas"></canvas>
+    </section>
+
+    <!-- Module 4: Interactive Scratch Card -->
+    <section class="haven-card">
+      <h2 class="card-title">🪙 Module 4: Interactive Scratch Card</h2>
+      <div class="scratch-container">
+        <div class="scratch-reveal">✨ YOU ARE ABSOLUTELY AWESOME! ✨</div>
+        <canvas id="scratch-canvas"></canvas>
+      </div>
+    </section>
+
+    <!-- Module 5: Jukebox Player -->
+    <section class="haven-card">
+      <h2 class="card-title">🎵 Module 5: Yellow Paper Daisy Jukebox</h2>
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <div style="font-size:2.5rem;">💿</div>
+        <div>
+          <h3 style="font-family:var(--font-playful);">When Chai Met Toast Vibes</h3>
+          <p style="font-size:0.85rem; color:#666;">Acoustic tracks & feel-good lyrics</p>
+        </div>
+        <button class="haven-btn" style="margin-left:auto;">▶ Play Tune</button>
+      </div>
+    </section>
+
+    <!-- Module 6: Banter Flip Cards -->
+    <section class="haven-card">
+      <h2 class="card-title">🃏 Module 6: Bestie Banter Cards</h2>
+      <div class="flip-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Click for Secret #1 🤫</div>
+            <div class="flip-back">You make every day brighter! ☀️</div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Click for Secret #2 ☕</div>
+            <div class="flip-back">Chai tastes better with you!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Module 7: Bubble Wrap -->
+    <section class="haven-card">
+      <h2 class="card-title">🫧 Module 7: Stress-Reliever Bubble Wrap</h2>
+      <div class="bubble-grid" id="bubble-wrap"></div>
+    </section>
+
+    <!-- Scrapbook Memory Section (Flork Reference Integration) -->
+    <section class="haven-card">
+      <h2 class="card-title">📌 Memory Scrapbook Pinboard</h2>
       <div class="pinboard-grid">
         <div class="polaroid-frame stamp-border">
           <div class="polaroid-img">🐱💬</div>
-          <div class="polaroid-caption">Bes-Tea Moments</div>
+          <div class="polaroid-caption">Bestie Moments</div>
         </div>
         <div class="polaroid-frame stamp-border">
           <div class="polaroid-img">☕✨</div>
-          <div class="polaroid-caption">Chai & Banter</div>
+          <div class="polaroid-caption">2 AM Venting</div>
         </div>
         <div class="polaroid-frame stamp-border">
           <div class="polaroid-img">🏔️🎒</div>
-          <div class="polaroid-caption">Pahaad Escape</div>
+          <div class="polaroid-caption">Mountain Escape</div>
         </div>
-      </div>
-    </section>
-
-    <!-- Custom Music Player Widget -->
-    <section class="haven-card">
-      <h2 class="card-title">🎵 Yellow Paper Daisy Jukebox</h2>
-      <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
-        <div style="width:70px; height:70px; border-radius:50%; background:#222; display:flex; align-items:center; justify-content:center; color:#FFD166; font-size:1.8rem; box-shadow: 0 0 0 6px #FFF, 0 0 0 8px var(--accent-pink);">
-          💿
-        </div>
-        <div>
-          <h3 style="font-family:var(--font-playful); font-size:1.2rem;">When Chai Met Toast Vibes</h3>
-          <p style="font-size:0.9rem; color:#666;">Acoustic Track Loops • Feel Good Notes</p>
-        </div>
-        <button class="haven-btn" style="margin-left:auto;">▶ Play Tune</button>
       </div>
     </section>
 
   </div>
 
   <script>
-    // Toggle Dim Ambient Lights
-    const dimBtn = document.getElementById('dim-toggle-btn');
-    dimBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dimmed');
-    });
-
-    // Candle Blow Out Interaction
+    // Module 1 Logic
     const candle = document.getElementById('main-candle');
     const cake = document.getElementById('cake-trigger');
     const wishJar = document.getElementById('wish-jar');
-    const wishCountDisplay = document.getElementById('wish-count');
     let wishCount = 0;
 
     cake.addEventListener('click', () => {
       if (!candle.classList.contains('extinguished')) {
         candle.classList.add('extinguished');
         wishCount++;
-        wishCountDisplay.innerText = `Wishes Collected: ${wishCount}`;
-        
-        // Spawn Flower in Jar
+        document.getElementById('wish-count').innerText = `Wishes Collected: ${wishCount}`;
         const flower = document.createElement('span');
         flower.innerText = '🌸';
-        flower.style.fontSize = '1.5rem';
+        flower.style.fontSize = '1.2rem';
         wishJar.appendChild(flower);
-
-        // Anime.js Flower Burst
-        anime({
-          targets: flower,
-          translateY: [-20, 0],
-          scale: [0, 1],
-          duration: 800,
-          easing: 'easeOutElastic(1, .5)'
-        });
       } else {
-        // Relight candle on next click
         candle.classList.remove('extinguished');
       }
     });
 
-    // Interactive Cursor Canvas Micro Animation (Web Shooting Stars)
+    document.getElementById('dim-toggle-btn').addEventListener('click', () => {
+      document.body.classList.toggle('dimmed');
+    });
+
+    // Module 2 Logic
+    const petSpeech = document.getElementById('pet-speech');
+    function feedPet(item) {
+      petSpeech.innerText = `Yum! Sunny loved the ${item}! 🌻✨`;
+      anime({ targets: '#pet-avatar', translateY: [-15, 0], duration: 500 });
+    }
+
+    // Module 4 Scratch Card Logic
+    const scratchCanvas = document.getElementById('scratch-canvas');
+    const sCtx = scratchCanvas.getContext('2d');
+    function initScratch() {
+      scratchCanvas.width = scratchCanvas.offsetWidth;
+      scratchCanvas.height = scratchCanvas.offsetHeight;
+      sCtx.fillStyle = '#C0C0C0';
+      sCtx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+    }
+    initScratch();
+
+    let isScratching = false;
+    scratchCanvas.addEventListener('mousedown', () => isScratching = true);
+    scratchCanvas.addEventListener('mouseup', () => isScratching = false);
+    scratchCanvas.addEventListener('mousemove', (e) => {
+      if (!isScratching) return;
+      const rect = scratchCanvas.getBoundingClientRect();
+      sCtx.globalCompositeOperation = 'destination-out';
+      sCtx.beginPath();
+      sCtx.arc(e.clientX - rect.left, e.clientY - rect.top, 15, 0, Math.PI * 2);
+      sCtx.fill();
+    });
+
+    // Module 7 Bubble Wrap Generator
+    const bubbleWrap = document.getElementById('bubble-wrap');
+    for (let i = 0; i < 24; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.addEventListener('click', () => b.classList.add('popped'));
+      bubbleWrap.appendChild(b);
+    }
+
+    // Cursor Trail Web Canvas
     const canvas = document.getElementById('web-canvas');
     const ctx = canvas.getContext('2d');
     let points = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
     window.addEventListener('mousemove', (e) => {
       points.push({ x: e.clientX, y: e.clientY, alpha: 1, size: Math.random() * 3 + 1 });
-      if (points.length > 25) points.shift();
+      if (points.length > 20) points.shift();
     });
 
     function renderCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < points.length; i++) {
-        let p = points[i];
+      points.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 130, 169, ${p.alpha})`;
         ctx.fill();
-        p.alpha -= 0.03;
-      }
+        p.alpha -= 0.04;
+      });
       points = points.filter(p => p.alpha > 0);
       requestAnimationFrame(renderCanvas);
     }
