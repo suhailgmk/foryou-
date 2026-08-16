@@ -226,9 +226,123 @@
       border: 2px solid var(--accent-dark-pink); border-radius: 50%; cursor: pointer;
     }
     .bubble.popped { background: #E0E0E0; border-color: #AAA; transform: scale(0.9); pointer-events: none; }
-    .final-badge {
-      display: none; background: #E8F5E9; border: 2px solid #4CAF50;
-      color: #2E7D32; padding: 0.8rem; border-radius: 16px; font-family: var(--font-playful);
+
+    /* SLIDE 7: AESTHETIC SCRAPBOOK CARD */
+    .scrapbook-container {
+      background: #C4B2A8;
+      border: 3px solid #2B2D42;
+      border-radius: 20px;
+      padding: 1.2rem 1rem;
+      position: relative;
+      text-align: left;
+      color: #111;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.08);
+    }
+    .sb-title-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 0.5rem;
+    }
+    .sb-main-title {
+      font-family: var(--font-handwriting);
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #A81B1B;
+      text-shadow: 2px 2px 0 #000;
+      line-height: 0.9;
+      text-align: right;
+    }
+    .sb-layout-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0.8rem;
+      align-items: start;
+    }
+    /* Polaroid Strip */
+    .polaroid-stack {
+      background: #FFF;
+      border: 2px solid #333;
+      padding: 8px 8px 18px 8px;
+      box-shadow: 4px 6px 12px rgba(0,0,0,0.15);
+      transform: rotate(-3deg);
+      cursor: pointer;
+      position: relative;
+    }
+    .polaroid-frame {
+      width: 100%;
+      height: 110px;
+      background: #333;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .polaroid-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(45deg, #1A1A2E, #1A1A2E 10px, #E94560 10px, #E94560 20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFF;
+      font-family: var(--font-playful);
+      font-size: 0.75rem;
+    }
+    .tape-badge {
+      position: absolute;
+      top: -8px;
+      left: 10px;
+      background: #FFF;
+      border: 1px solid #666;
+      font-size: 0.65rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      transform: rotate(-12deg);
+      box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    /* Journal Story Text */
+    .sb-journal-text {
+      font-family: var(--font-handwriting);
+      font-size: 1.35rem;
+      line-height: 1.25;
+      color: #1A237E;
+      font-weight: 700;
+    }
+    .sb-highlight-red {
+      color: #D32F2F;
+      font-size: 1.5rem;
+    }
+    /* Stickers */
+    .sb-sticker-web {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 55px;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+    .sb-heart-vinyl {
+      width: 100%;
+      max-width: 90px;
+      aspect-ratio: 1;
+      background: #000;
+      border-radius: 12px;
+      margin: 0.8rem auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+    }
+    .sb-heart-inner {
+      width: 45px;
+      height: 40px;
+      background: #D32F2F;
+      clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+      transform: scale(1.2);
     }
   </style>
 </head>
@@ -237,7 +351,7 @@
   <main class="app-viewport">
 
     <header class="stepper-bar">
-      <span class="step-pill" id="step-pill">STAGE 1 / 6</span>
+      <span class="step-pill" id="step-pill">STAGE 1 / 7</span>
       <div class="step-tracker" id="step-tracker">✨ Multiverse Journey</div>
     </header>
 
@@ -309,15 +423,57 @@
     <!-- SLIDE 6: BUBBLE WRAP -->
     <section class="slide-card" id="slide-6">
       <h1 class="slide-title">Tactile Bubble Wrap</h1>
-      <p class="slide-subtitle">Pop all stress bubbles to unlock the final message!</p>
+      <p class="slide-subtitle">Pop all stress bubbles to unlock the scrapbook layout!</p>
       <div class="bubble-grid">
         <div class="bubble" onclick="popBubble(this)"></div><div class="bubble" onclick="popBubble(this)"></div>
         <div class="bubble" onclick="popBubble(this)"></div><div class="bubble" onclick="popBubble(this)"></div>
         <div class="bubble" onclick="popBubble(this)"></div><div class="bubble" onclick="popBubble(this)"></div>
         <div class="bubble" onclick="popBubble(this)"></div><div class="bubble" onclick="popBubble(this)"></div>
       </div>
-      <div class="final-badge" id="final-badge">
-        🎉 Happy Birthday! All Modules Unlocked! Have an incredible celebration! 💖
+      <button class="next-btn" id="btn-slide-6" onclick="goToSlide(7)">Unlock Scrapbook Journal ➔</button>
+    </section>
+
+    <!-- SLIDE 7: AESTHETIC SCRAPBOOK CARD -->
+    <section class="slide-card" id="slide-7">
+      <h1 class="slide-title">Scrapbook Journal</h1>
+      <p class="slide-subtitle">Tap the polaroid strip to swap portraits or spin the heart vinyl!</p>
+
+      <div class="scrapbook-container">
+        <!-- Spider Web Doodle Overlay -->
+        <svg class="sb-sticker-web" viewBox="0 0 100 100" fill="none" stroke="#2B2D42" stroke-width="3">
+          <path d="M0 0 L100 100 M0 0 L100 40 M0 0 L40 100"/>
+          <path d="M20 10 Q 15 15 10 20 M40 20 Q 30 30 20 40 M60 30 Q 45 45 30 60"/>
+        </svg>
+
+        <div class="sb-title-wrap">
+          <div class="sb-main-title">SPIDER<br>—<br>MINE</div>
+        </div>
+
+        <div class="sb-layout-grid">
+          <!-- Polaroid Section -->
+          <div>
+            <div class="polaroid-stack" onclick="cyclePolaroid()">
+              <div class="tape-badge">LOVE</div>
+              <div class="polaroid-frame">
+                <div class="polaroid-img-placeholder" id="polaroid-display">
+                  🕷️ Tap to Swap Frame
+                </div>
+              </div>
+            </div>
+
+            <div class="sb-heart-vinyl" onclick="toggleHeartVinyl(this)">
+              <div class="sb-heart-inner"></div>
+            </div>
+          </div>
+
+          <!-- Handwritten Story Section -->
+          <div class="sb-journal-text">
+            <p>Life was quiet, no sense of rhythm...</p>
+            <p style="margin-top:0.4rem;">And then we met. 💫</p>
+            <p style="margin-top:0.4rem;">His presence was unmatched, sparks were different.</p>
+            <p class="sb-highlight-red" style="margin-top:0.6rem;">BEST DAY EVER!!</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -332,7 +488,7 @@
       const target = document.getElementById(`slide-${num}`);
       if (target) {
         target.classList.add('active');
-        document.getElementById('step-pill').innerText = `STAGE ${num} / 6`;
+        document.getElementById('step-pill').innerText = `STAGE ${num} / 7`;
         if (num === 2) startCamera();
         if (num === 3) initScratchCard();
       }
@@ -451,8 +607,28 @@
       el.classList.add('popped');
       popped++;
       if (popped >= 8) {
-        document.getElementById('final-badge').style.display = 'block';
+        document.getElementById('btn-slide-6').classList.add('visible');
       }
+    }
+
+    // Scrapbook Polaroid & Heart Vinyl
+    const polaroidStyles = [
+      { text: "🕷️ Duo Moment", bg: "linear-gradient(135deg, #1A1A2E, #E94560)" },
+      { text: "✨ Aesthetic Memory", bg: "linear-gradient(135deg, #FF82A9, #FFD166)" },
+      { text: "💖 Bestie Vibe", bg: "linear-gradient(135deg, #4CAF50, #2E7D32)" }
+    ];
+    let polaroidIdx = 0;
+
+    function cyclePolaroid() {
+      polaroidIdx = (polaroidIdx + 1) % polaroidStyles.length;
+      const el = document.getElementById('polaroid-display');
+      el.innerText = polaroidStyles[polaroidIdx].text;
+      el.style.background = polaroidStyles[polaroidIdx].bg;
+    }
+
+    function toggleHeartVinyl(el) {
+      el.style.transform = el.style.transform === 'rotate(180deg)' ? 'rotate(0deg)' : 'rotate(180deg)';
+      el.style.transition = 'transform 0.6s ease';
     }
   </script>
 </body>
