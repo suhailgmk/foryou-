@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For My Bestie | Multiverse Hub</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #0d0e15;
+      --card-bg: rgba(22, 24, 37, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-color: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.3);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --spider-pink: #ec4899;
+      --conrad-blue: #3b82f6;
+    }
+
+    [data-theme="conrad"] {
+      --bg-color: #0b132b;
+      --card-bg: rgba(28, 37, 65, 0.75);
+      --card-border: rgba(91, 192, 190, 0.2);
+      --accent-color: #38ef7d;
+      --accent-glow: rgba(56, 239, 125, 0.3);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      transition: background-color 0.5s ease;
+      padding-bottom: 60px;
+    }
+
+    /* Floating Utilities */
+    .theme-toggle-bar {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      padding: 8px 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      transition: all 0.3s ease;
+    }
+    .theme-toggle-bar:hover { transform: scale(1.05); }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .module-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .module-card:hover { border-color: var(--accent-color); }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--accent-color), #d97706);
+      color: #000;
+      font-weight: 700;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px var(--accent-glow); }
+
+    .easter-egg-keyword {
+      color: var(--accent-color);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: underline dotted;
+    }
+
+    /* Canvas Elements */
+    canvas { display: block; margin: 0 auto; max-width: 100%; }
+
+    /* Flip Cards Grid */
+    .flip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .flip-card {
+      height: 140px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .flip-back {
+      background: var(--accent-color);
+      color: #000;
+      font-weight: 700;
+      transform: rotateY(180deg);
+    }
+
+    /* Radar/Slider */
+    .slider-group { margin-bottom: 16px; }
+    .slider-group label { display: block; font-size: 0.85rem; margin-bottom: 6px; }
+    .slider-group input { width: 100%; accent-color: var(--accent-color); }
+
+    /* Badge Grid */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+    .badge-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .badge-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-3px); }
+    .badge-icon { font-size: 2rem; margin-bottom: 8px; }
+
+    /* Chat Simulation */
+    .chat-box {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      padding: 16px;
+      height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-msg {
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      max-width: 80%;
+    }
+    .chat-msg.them { background: rgba(255, 255, 255, 0.1); align-self: flex-start; }
+    .chat-msg.me { background: var(--accent-color); color: #000; align-self: flex-end; font-weight: 600; }
+
+    /* Envelope */
+    .envelope-card {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px dashed var(--accent-color);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+    }
+    .letter-content {
+      display: none;
+      text-align: left;
+      margin-top: 20px;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    /* Soundboard */
+    .sound-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Utility: Theme Switcher -->
+  <button class="theme-toggle-bar" onclick="toggleTheme()" id="themeBtn">🌊 Switch to Conrad Sky</button>
+
+  <div class="container">
+
+    <!-- Module 1: Hero & Candle -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🎂 Welcome to Your Multiverse</h2>
+      <p class="subtitle">A special space curated just for you. Tap the candle to start!</p>
+      <div id="candle" style="font-size: 4rem; cursor: pointer; display: inline-block; transition: transform 0.2s;" onclick="extinguishCandle()">🕯️</div>
+      <p id="candleStatus" style="font-size: 0.85rem; color: var(--accent-color); margin-top: 10px;">Flame is burning bright!</p>
+    </div>
+
+    <!-- Module 2: The Sunflower Theory -->
+    <div class="module-card">
+      <h2>🌻 The Sunflower Theory Tracker</h2>
+      <p class="subtitle">Sunflowers turn toward each other on dark days. Move your cursor or touch below:</p>
+      <canvas id="sunflowerCanvas" width="300" height="200"></canvas>
+      <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">
+        <em>In every universe, my attention naturally turns toward you.</em>
+      </p>
+    </div>
+
+    <!-- Module 3: Audio Jukebox & Lyrics -->
+    <div class="module-card">
+      <h2>🌼 Yellow Paper Daisy Jukebox</h2>
+      <p class="subtitle">Inspired by When Chai Met Toast</p>
+      <div style="background: rgba(0, 0, 0, 0.3); padding: 16px; border-radius: 12px; text-align: center;">
+        <p style="font-weight: 700; margin-bottom: 8px;">🎵 Yellow Paper Daisy — Live Mode</p>
+        <p style="font-size: 0.85rem; font-style: italic; color: var(--accent-color); margin-bottom: 15px;" id="lyricDisplay">"Oh, you complete me like cherry on ice cream..."</p>
+        <button class="btn" onclick="nextLyric()">Next Lyric Line 🎶</button>
+      </div>
+    </div>
+
+    <!-- Module 4: Dynamic Theme Info -->
+    <div class="module-card">
+      <h2>🎨 Aesthetic Shift Protocol</h2>
+      <p class="subtitle">Toggle between Spider-Verse Glow & Conrad Ocean Blue effortlessly using the top button.</p>
+      <p style="font-size: 0.9rem;">Current State: <span id="currentThemeLabel" style="color: var(--accent-color); font-weight: 700;">Spider-Verse Glow</span></p>
+    </div>
+
+    <!-- Module 5: "Aee Lala, Let's Settle This!" Flip Cards -->
+    <div class="module-card">
+      <h2>🤪 Aee Lala, Let's Settle This!</h2>
+      <p class="subtitle">Tap any card to flip and reveal the truth:</p>
+      <div class="flip-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Who is more <span class="easter-egg-keyword">pagal</span>?</div>
+            <div class="flip-back">You, 100%. Chal jhuttee, no debate!</div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Who drama-queens more?</div>
+            <div class="flip-back"><span class="easter-egg-keyword">Arerere</span>, definitely you!</div>
+          </div>
+        </div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Who has top priority?</div>
+            <div class="flip-back">You, always by my side!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 6: Spider-Sense Predictor -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🕸️ Spider-Sense Predictor</h2>
+      <p class="subtitle">Tap the orb for an instant bestie fortune</p>
+      <div id="orb" onclick="predictFortune()" style="width: 80px; height: 80px; background: radial-gradient(circle, var(--accent-color), #000); border-radius: 50%; margin: 0 auto; cursor: pointer; box-shadow: 0 0 20px var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🔮</div>
+      <p id="predictionText" style="margin-top: 15px; font-weight: 600; color: var(--accent-color);">Tap to activate...</p>
+    </div>
+
+    <!-- Module 7: Spin the Web of Fate -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🎡 Spin the Web of Fate</h2>
+      <p class="subtitle">Claim your guaranteed bestie perk</p>
+      <button class="btn" onclick="spinWheel()">Spin Wheel 🎯</button>
+      <p id="wheelResult" style="margin-top: 15px; font-weight: 700; color: var(--accent-color);"></p>
+    </div>
+
+    <!-- Module 8: Multiversal Fortune Cookie -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🥠 Multiversal Fortune Cookie</h2>
+      <p class="subtitle">Crack it open endlessly!</p>
+      <button class="btn" onclick="crackCookie()">Crack Cookie 🥠</button>
+      <p id="cookieText" style="margin-top: 15px; font-style: italic; color: var(--text-main);"></p>
+    </div>
+
+    <!-- Module 9: "Chal Jhuttee" Myth-Buster Board -->
+    <div class="module-card">
+      <h2>💥 "Chal Jhuttee" Myth-Buster Board</h2>
+      <p class="subtitle">Separating facts from fiction</p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>Myth: You ever walk alone on cloudy days.</span>
+          <button class="btn" style="padding: 4px 10px; font-size: 0.75rem;" onclick="alert('FALSE! Always turned toward you.')">Bust Myth ❌</button>
+        </div>
+        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span>Myth: Chai tastes better without good company.</span>
+          <button class="btn" style="padding: 4px 10px; font-size: 0.75rem;" onclick="alert('FALSE! Chai + Pahaad talks win every time.')">Bust Myth ❌</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 10: The 2 AM Listener Log -->
+    <div class="module-card">
+      <h2>🎧 The 2 AM Listener Log</h2>
+      <p class="subtitle">Instant Reply Simulator (0.01s Latency)</p>
+      <div class="chat-box" id="chatBox">
+        <div class="chat-msg them">Hey, you awake? Need to vent...</div>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <input type="text" id="chatInput" placeholder="Type a vent message..." style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); padding: 8px 12px; border-radius: 8px; color: #fff;">
+        <button class="btn" onclick="sendVent()">Vent Now ⚡</button>
+      </div>
+    </div>
+
+    <!-- Module 11: The Bestie Priority Radar -->
+    <div class="module-card">
+      <h2>📈 The Bestie Priority Radar</h2>
+      <p class="subtitle">Hardcoded to lock at 100% Top Tier</p>
+      <div class="slider-group">
+        <label>Reply Speed: <span id="v1">100%</span></label>
+        <input type="range" min="100" max="100" value="100">
+      </div>
+      <div class="slider-group">
+        <label>Listening Patience: <span id="v2">100%</span></label>
+        <input type="range" min="100" max="100" value="100">
+      </div>
+      <div class="slider-group">
+        <label>Bestie Loyalty: <span id="v3">100%</span></label>
+        <input type="range" min="100" max="100" value="100">
+      </div>
+    </div>
+
+    <!-- Module 12: Multiverse Canon Event Badges -->
+    <div class="module-card">
+      <h2>🏆 Canon Event Badges</h2>
+      <p class="subtitle">Tap a badge to view unlock criteria</p>
+      <div class="badge-grid">
+        <div class="badge-item" onclick="alert('Unlocked: Safe Haven Badge - Always here to listen!')">
+          <div class="badge-icon">🛡️</div>
+          <div style="font-weight: 700; font-size: 0.85rem;">Safe Haven</div>
+        </div>
+        <div class="badge-item" onclick="alert('Unlocked: Team Conrad Energy - Pure summer calm vibes!')">
+          <div class="badge-icon">🌊</div>
+          <div style="font-weight: 700; font-size: 0.85rem;"><span class="easter-egg-keyword">Conrad</span> Vibe</div>
+        </div>
+        <div class="badge-item" onclick="alert('Unlocked: Fast Reply Pass - Faster than Spider-Sense!')">
+          <div class="badge-icon">⚡</div>
+          <div style="font-weight: 700; font-size: 0.85rem;">Fast Reply</div>
+        </div>
+        <div class="badge-item" onclick="alert('Unlocked: Jackpot Bestie - 10/10 Rare Find!')">
+          <div class="badge-icon">💎</div>
+          <div style="font-weight: 700; font-size: 0.85rem;">Jackpot Hit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 13: Polaroids of the Multiverse -->
+    <div class="module-card">
+      <h2>📸 Polaroids of the Multiverse</h2>
+      <p class="subtitle">Hoverable snapshot collection</p>
+      <div style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px;">
+        <div style="background: #fff; color: #000; padding: 10px; border-radius: 8px; min-width: 140px; text-align: center;">
+          <div style="height: 100px; background: #3b82f6; border-radius: 4px; margin-bottom: 8px;"></div>
+          <span style="font-size: 0.75rem; font-weight: 700;">Summer Skies</span>
+        </div>
+        <div style="background: #fff; color: #000; padding: 10px; border-radius: 8px; min-width: 140px; text-align: center;">
+          <div style="height: 100px; background: #f59e0b; border-radius: 4px; margin-bottom: 8px;"></div>
+          <span style="font-size: 0.75rem; font-weight: 700;">Yellow Daisies</span>
+        </div>
+        <div style="background: #fff; color: #000; padding: 10px; border-radius: 8px; min-width: 140px; text-align: center;">
+          <div style="height: 100px; background: #ec4899; border-radius: 4px; margin-bottom: 8px;"></div>
+          <span style="font-size: 0.75rem; font-weight: 700;">Pahaad & Chai</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Module 14: "Bloom My Daisy" Particle Generator -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🌼 "Bloom My Daisy" Particle Burst</h2>
+      <p class="subtitle">Trigger a petal burst across your screen</p>
+      <button class="btn" onclick="triggerDaisies()">Bloom Daisies 🌼✨</button>
+    </div>
+
+    <!-- Module 15: Endless Bestie Compliment Generator -->
+    <div class="module-card" style="text-align: center;">
+      <h2>✨ Endless Bestie Compliment Generator</h2>
+      <p class="subtitle">Tap for instant validation</p>
+      <button class="btn" onclick="generateCompliment()">Generate Compliment 💖</button>
+      <p id="complimentText" style="margin-top: 15px; font-weight: 700; color: var(--accent-color);"></p>
+    </div>
+
+    <!-- Module 16: The Pahaad & Chai Escape Planner -->
+    <div class="module-card">
+      <h2>🏔️ The Pahaad & Chai Escape Planner</h2>
+      <p class="subtitle">Select your ultimate mountain escape components:</p>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label><input type="checkbox" checked> Hot Adrak Chai in kulhad ☕</label>
+        <label><input type="checkbox" checked> Silent valley view & cold breeze 🏔️</label>
+        <label><input type="checkbox" checked> When Chai Met Toast playlist on loop 🎧</label>
+        <label><input type="checkbox" checked> Zero stress & endless talks 💬</label>
+      </div>
+      <button class="btn" style="margin-top: 15px;" onclick="alert('Itinerary Locked! Destination: Mountains calling! 🏔️')">Lock Itinerary 🚀</button>
+    </div>
+
+    <!-- Module 17: "Oiii, Sip Some Chai!" Break Reminder -->
+    <div class="module-card" style="text-align: center;">
+      <h2>☕ "Oiii, Sip Some Chai!" Break Reminder</h2>
+      <p class="subtitle">Tap the cup to fill it with hot tea</p>
+      <div id="teaCup" onclick="fillTea()" style="font-size: 3rem; cursor: pointer;">🫖</div>
+      <p id="teaStatus" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px;">Tap to brew...</p>
+    </div>
+
+    <!-- Module 18: Secret Word Vault -->
+    <div class="module-card">
+      <h2>🔑 Secret Word Vault</h2>
+      <p class="subtitle">Tap keywords throughout the page (<span class="easter-egg-keyword" onclick="alert('Secret Easter Egg: You are genuinely an absolute gem of a bestie!')">pagal</span>, <span class="easter-egg-keyword" onclick="alert('Secret Easter Egg: Always turned toward you like a sunflower!')">arerere</span>, <span class="easter-egg-keyword" onclick="alert('Secret Easter Egg: Team Conrad energy forever!')">conrad</span>) to unlock hidden notes.</p>
+    </div>
+
+    <!-- Module 19: Interactive Bestie Soundboard -->
+    <div class="module-card">
+      <h2>🔊 Interactive Bestie Soundboard</h2>
+      <p class="subtitle">Tactile audio effects</p>
+      <div class="sound-grid">
+        <button class="btn" onclick="playSound('Web-Shooter! 🕸️')">🕸️ Web-Shoot</button>
+        <button class="btn" onclick="playSound('Chai Sip... Ahh! ☕')">☕ Chai Sip</button>
+        <button class="btn" onclick="playSound('Celebration Chime! 🔔')">🔔 Birthday Chime</button>
+        <button class="btn" onclick="playSound('Aee Lala! 🤪')">🤪 Aee Lala</button>
+      </div>
+    </div>
+
+    <!-- Module 20: The Unsealable Secret Letter -->
+    <div class="module-card">
+      <div class="envelope-card">
+        <h2>💌 The Unsealable Secret Letter</h2>
+        <p class="subtitle">Encrypted & Transmitted with care</p>
+        <button class="btn" id="unsealBtn" onclick="unsealLetter()">Unseal Letter 🔓</button>
+        <div class="letter-content" id="letterContent">
+          <p>Hey Bestie,</p><br>
+          <p>If you're reading this, I just want you to know how deeply valued you are. Like a sunflower turned toward light, or a rare yellow paper daisy that never fades—you bring so much warmth into my quiet days.</p><br>
+          <p>No matter how chaotic life gets or how cloudy the skies turn, remember you always have a dedicated listener by your side. Zero judgment, fast replies, and endless support.</p><br>
+          <p>Here's to endless chai, mountain escapes, and unforgettable moments ahead. You're an absolute gem!</p><br>
+          <p style="font-weight: 700; color: var(--accent-color);">Always keeping you by my side. ✨</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* Theme Toggle */
+    let currentTheme = 'spider';
+    function toggleTheme() {
+      const btn = document.getElementById('themeBtn');
+      const label = document.getElementById('currentThemeLabel');
+      if (currentTheme === 'spider') {
+        document.body.setAttribute('data-theme', 'conrad');
+        btn.innerText = '🕸️ Switch to Spider-Verse';
+        label.innerText = 'Summer Conrad Ocean';
+        currentTheme = 'conrad';
+      } else {
+        document.body.removeAttribute('data-theme');
+        btn.innerText = '🌊 Switch to Conrad Sky';
+        label.innerText = 'Spider-Verse Glow';
+        currentTheme = 'spider';
+      }
+    }
+
+    /* Candle */
+    function extinguishCandle() {
+      document.getElementById('candle').innerText = '💨';
+      document.getElementById('candleStatus').innerText = 'Wish Made! Confetti Fired! 🎉';
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
+
+    /* Sunflower Canvas */
+    const canvas = document.getElementById('sunflowerCanvas');
+    const ctx = canvas.getContext('2d');
+    let angle = 0;
+
+    function drawSunflower(targetX, targetY) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2 + 20;
+
+      // Calculate angle toward cursor
+      const dx = targetX - centerX;
+      const dy = targetY - centerY;
+      angle = Math.atan2(dy, dx);
+
+      // Stem
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(centerX, canvas.height);
+      ctx.strokeStyle = '#16a34a';
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // Flower Head Group
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(angle - Math.PI / 2);
+
+      // Petals
+      ctx.fillStyle = '#f59e0b';
+      for (let i = 0; i < 12; i++) {
+        ctx.beginPath();
+        ctx.rotate((Math.PI * 2) / 12);
+        ctx.ellipse(0, 30, 8, 20, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Center
+      ctx.beginPath();
+      ctx.arc(0, 0, 18, 0, Math.PI * 2);
+      ctx.fillStyle = '#78350f';
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      drawSunflower(e.clientX - rect.left, e.clientY - rect.top);
+    });
+
+    drawSunflower(150, 50);
+
+    /* Lyrics */
+    const lyrics = [
+      '"Oh, you complete me like cherry on ice cream..."',
+      '"Like a yellow paper daisy, rare and unfading..."',
+      '"Life is a movie around you lately..."',
+      '"Oiii pagal, you bring color to quiet days..."'
+    ];
+    let lyricIdx = 0;
+    function nextLyric() {
+      lyricIdx = (lyricIdx + 1) % lyrics.length;
+      document.getElementById('lyricDisplay').innerText = lyrics[lyricIdx];
+    }
+
+    /* Predictor */
+    const predictions = [
+      "100% Canon Event: You're getting chai today!",
+      "Pahaad trip calling in 2026!",
+      "Warning: High chance of giggling at 2 AM talks.",
+      "Jackpot year ahead — no notes!"
+    ];
+    function predictFortune() {
+      const text = predictions[Math.floor(Math.random() * predictions.length)];
+      document.getElementById('predictionText').innerText = text;
+    }
+
+    /* Wheel */
+    const perks = ["24/7 Venting Pass 🛡️", "Unlimited Chai Session ☕", "You're Always Right Pass 👑", "Pahaad Trip Ticket 🏔️"];
+    function spinWheel() {
+      const perk = perks[Math.floor(Math.random() * perks.length)];
+      document.getElementById('wheelResult').innerText = "You Won: " + perk;
+      confetti({ particleCount: 50 });
+    }
+
+    /* Cookie */
+    const fortunes = [
+      "You will receive an unexpected cute text soon.",
+      "A mountain breeze is waiting for you.",
+      "You remain the undisputed 10/10 bestie."
+    ];
+    function crackCookie() {
+      const f = fortunes[Math.floor(Math.random() * fortunes.length)];
+      document.getElementById('cookieText').innerText = '"' + f + '"';
+    }
+
+    /* Chat Simulation */
+    function sendVent() {
+      const input = document.getElementById('chatInput');
+      const box = document.getElementById('chatBox');
+      if (!input.value.trim()) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg me';
+      userMsg.innerText = input.value;
+      box.appendChild(userMsg);
+
+      input.value = '';
+      box.scrollTop = box.scrollHeight;
+
+      // Simulated instant reply
+      setTimeout(() => {
+        const replyMsg = document.createElement('div');
+        replyMsg.className = 'chat-msg them';
+        replyMsg.innerText = "I'm right here listening. Tell me everything! 🎧";
+        box.appendChild(replyMsg);
+        box.scrollTop = box.scrollHeight;
+      }, 500);
+    }
+
+    /* Daisies Particle */
+    function triggerDaisies() {
+      confetti({
+        particleCount: 40,
+        scalar: 1.2,
+        shapes: ['circle'],
+        colors: ['#f59e0b', '#fbbf24', '#ffffff']
+      });
+    }
+
+    /* Compliment */
+    const compliments = [
+      "Aee lala, you're 100% an absolute gem!",
+      "Did you know? You have the best laugh in this multiverse.",
+      "10/10 bestie rating. No notes!",
+      "Oiii, take a break and sip some chai!"
+    ];
+    function generateCompliment() {
+      const c = compliments[Math.floor(Math.random() * compliments.length)];
+      document.getElementById('complimentText').innerText = c;
+    }
+
+    /* Tea */
+    function fillTea() {
+      document.getElementById('teaCup').innerText = '☕';
+      document.getElementById('teaStatus').innerText = 'Hot Adrak Chai Ready! Sip away ~ 🫖';
+    }
+
+    /* Soundboard */
+    function playSound(name) {
+      alert("🔊 Sound Played: " + name);
+    }
+
+    /* Unseal Letter */
+    function unsealLetter() {
+      document.getElementById('unsealBtn').style.display = 'none';
+      document.getElementById('letterContent').style.display = 'block';
+      confetti({ particleCount: 80, spread: 80 });
+    }
+  </script>
+</body>
+</html>
