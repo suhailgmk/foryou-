@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Multiverse Haven | Complete Sequential Experience</title>
+  <title>Multiverse Haven | Interactive Experience</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600&family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
   <style>
     :root {
       --bg-peach: #FFF5F0;
-      --card-glass: rgba(255, 255, 255, 0.92);
+      --card-glass: rgba(255, 255, 255, 0.94);
       --card-border: rgba(255, 182, 193, 0.6);
       --accent-pink: #FF82A9;
       --accent-dark-pink: #E0527F;
@@ -47,7 +47,7 @@
       padding: 1rem;
     }
 
-    /* Stepper Bar */
+    /* Stepper Header */
     .stepper-bar {
       display: flex;
       justify-content: space-between;
@@ -57,7 +57,6 @@
       padding: 0.6rem 1rem;
       border-radius: 30px;
       border: 2px solid var(--card-border);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
     .step-pill {
       font-family: var(--font-playful);
@@ -73,7 +72,7 @@
       font-weight: 700;
     }
 
-    /* Slide Deck Mechanics */
+    /* Cards */
     .slide-card {
       display: none;
       background: var(--card-glass);
@@ -87,7 +86,7 @@
     .slide-card.active { display: block; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -98,7 +97,6 @@
       line-height: 1.1;
       margin-bottom: 0.3rem;
     }
-
     .slide-subtitle {
       font-size: 0.9rem;
       color: #666;
@@ -106,8 +104,8 @@
       line-height: 1.3;
     }
 
-    /* Global Navigation Buttons */
-    .next-btn {
+    /* Buttons */
+    .action-btn {
       width: 100%;
       background: var(--accent-pink);
       color: #FFF;
@@ -118,42 +116,49 @@
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 4px 0 var(--text-dark);
-      margin-top: 1.2rem;
-      display: none;
+      margin-top: 0.8rem;
     }
-    .next-btn:active {
+    .action-btn:active {
       transform: translateY(3px);
       box-shadow: 0 1px 0 var(--text-dark);
     }
+    .next-btn {
+      width: 100%;
+      background: #4CAF50;
+      color: #FFF;
+      border: 2.5px solid var(--text-dark);
+      padding: 0.85rem 1rem;
+      font-family: var(--font-playful);
+      font-size: 1.05rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--text-dark);
+      margin-top: 1rem;
+      display: none;
+    }
     .next-btn.visible { display: block; }
 
-    /* --- SLIDE 1: CANDLE WISH --- */
+    /* --- SLIDE 1: CANDLE --- */
     .candle-stage {
-      height: 180px;
+      height: 170px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
       position: relative;
       cursor: pointer;
-      margin-bottom: 0.5rem;
     }
-    .flork-svg { width: 120px; height: auto; position: absolute; top: 0; z-index: 10; }
+    .flork-svg { width: 110px; height: auto; position: absolute; top: 0; z-index: 10; }
     .cake-base {
-      width: 160px; height: 80px; background: #FFF0F5;
+      width: 150px; height: 75px; background: #FFF0F5;
       border: 3px solid var(--text-dark); border-radius: 16px 16px 10px 10px;
       position: relative; z-index: 20; box-shadow: 0 6px 0 #FFB3C6;
     }
-    .cake-drip {
-      position: absolute; top: 0; left: 0; width: 100%; height: 22px;
-      background: var(--accent-pink); border-radius: 12px 12px 6px 6px;
-      border-bottom: 3px solid var(--text-dark);
-    }
     .candle-stick {
-      width: 12px; height: 40px;
+      width: 12px; height: 38px;
       background: repeating-linear-gradient(45deg, #FFF, #FFF 5px, var(--accent-pink) 5px, var(--accent-pink) 10px);
       border: 2px solid var(--text-dark); border-radius: 4px;
-      position: absolute; top: -36px; left: 50%; transform: translateX(-50%); z-index: 25;
+      position: absolute; top: -34px; left: 50%; transform: translateX(-50%); z-index: 25;
     }
     .flame-element {
       width: 16px; height: 24px;
@@ -162,103 +167,70 @@
       position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
       box-shadow: 0 0 15px #FFD166; animation: flameWobble 0.8s infinite alternate; z-index: 30;
     }
+    .flame-element.extinguished { opacity: 0; pointer-events: none; }
     @keyframes flameWobble {
       0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
       100% { transform: translateX(-50%) scale(1.1) rotate(3deg); }
     }
-    .flame-element.extinguished { opacity: 0; pointer-events: none; }
 
-    /* --- SLIDE 2: SCRATCH CARD --- */
+    /* --- SLIDE 2: PHOTO BOOTH --- */
+    .booth-container {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      background: #111;
+      border: 3px solid var(--text-dark);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 0.8rem;
+    }
+    #camera-feed, #photo-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sticker-tray {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .sticker-btn {
+      background: #FFF;
+      border: 2px solid var(--text-dark);
+      border-radius: 12px;
+      padding: 0.4rem 0.6rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    /* --- SLIDE 3: SCRATCH CARD --- */
     .scratch-container {
       position: relative; width: 100%; height: 180px;
       border: 3px dashed var(--accent-pink); border-radius: 20px;
-      overflow: hidden; background: #FFF; margin-bottom: 0.5rem;
+      overflow: hidden; background: #FFF9FC;
     }
     .scratch-secret {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 1rem; background: #FFF9FC;
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
     }
-    .scratch-secret p { font-family: var(--font-handwriting); font-size: 1.5rem; color: var(--text-dark); line-height: 1.3; }
-    #scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; cursor: pointer; }
-
-    /* --- SLIDE 3: VINYL JUKEBOX --- */
-    .vinyl-container {
-      width: 160px; height: 160px; margin: 0 auto 1rem; position: relative;
-      border-radius: 50%; background: #111; border: 4px solid var(--text-dark);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-    .vinyl-grooves {
-      width: 140px; height: 140px; border-radius: 50%;
-      border: 2px dashed #333; display: flex; align-items: center; justify-content: center;
-    }
-    .vinyl-label {
-      width: 60px; height: 60px; border-radius: 50%; background: var(--accent-pink);
-      border: 3px solid var(--text-dark); display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-    }
-    .vinyl-container.spinning { animation: spin 3s linear infinite; }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
-    .track-list { display: flex; flex-direction: column; gap: 0.5rem; }
-    .track-item {
-      background: #FFF; border: 2px solid var(--card-border); padding: 0.6rem 1rem;
-      border-radius: 12px; font-family: var(--font-playful); font-size: 0.9rem;
-      display: flex; justify-content: space-between; align-items: center; cursor: pointer;
-    }
-    .track-item.active { border-color: var(--accent-pink); background: #FFF0F5; }
-
-    /* --- SLIDE 4: POLAROID PINBOARD --- */
-    .polaroid-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.5rem; }
-    .polaroid-card {
-      background: #FFF; padding: 0.5rem 0.5rem 1rem; border: 2px solid var(--text-dark);
-      border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.06); cursor: pointer;
-      transform: rotate(-2deg); transition: transform 0.2s ease;
-    }
-    .polaroid-card:nth-child(even) { transform: rotate(3deg); }
-    .polaroid-img {
-      width: 100%; height: 90px; background: #FFE6EE; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center; font-size: 2rem;
-      margin-bottom: 0.4rem; border: 1px solid #FFC2D1;
-    }
-    .polaroid-caption { font-family: var(--font-handwriting); font-size: 1.1rem; color: var(--text-dark); }
-
-    /* --- SLIDE 5: BUBBLE WRAP --- */
-    .bubble-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-bottom: 1rem; }
-    .bubble {
-      aspect-ratio: 1; background: radial-gradient(circle at 30% 30%, #FFF, var(--accent-pink));
-      border: 2px solid var(--accent-dark-pink); border-radius: 50%;
-      cursor: pointer; box-shadow: inset 0 -3px 4px rgba(0,0,0,0.1), 0 3px 6px rgba(0,0,0,0.05);
-      transition: transform 0.1s ease, background 0.2s ease;
-    }
-    .bubble.popped {
-      background: #E0E0E0; border-color: #AAA; transform: scale(0.88);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); pointer-events: none;
-    }
-    .final-badge {
-      display: none; background: #E8F5E9; border: 2px solid #4CAF50;
-      color: #2E7D32; padding: 0.8rem; border-radius: 16px;
-      font-family: var(--font-playful); font-size: 1rem; margin-top: 0.5rem;
-    }
+    .scratch-secret p { font-family: var(--font-handwriting); font-size: 1.5rem; color: var(--text-dark); }
+    #scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; }
   </style>
 </head>
 <body>
 
   <main class="app-viewport">
 
-    <!-- Progress Stepper Header -->
     <header class="stepper-bar">
-      <span class="step-pill" id="step-pill">STAGE 1 / 5</span>
-      <div class="step-tracker" id="step-tracker">
-        ✨ Unveil Module
-      </div>
+      <span class="step-pill" id="step-pill">STAGE 1 / 3</span>
+      <div class="step-tracker" id="step-tracker">✨ Multiverse Journey</div>
     </header>
 
-    <!-- SLIDE 1: CANDLE WISH -->
+    <!-- SLIDE 1: MIC CANDLE -->
     <section class="slide-card active" id="slide-1">
-      <h1 class="slide-title">The Wish Ritual</h1>
-      <p class="slide-subtitle">Tap the candle flame to blow it out and make your secret wish!</p>
+      <h1 class="slide-title">The Birthday Wish</h1>
+      <p class="slide-subtitle">Enable your mic and blow directly onto your phone screen (or tap the flame)!</p>
 
       <div class="candle-stage" id="candle-trigger">
         <svg class="flork-svg" viewBox="0 0 100 100" fill="none">
@@ -269,117 +241,53 @@
           <path d="M 38 21 L 50 2 L 62 21 Z" fill="#FF82A9" stroke="#2B2D42" stroke-width="2.5"/>
           <circle cx="50" cy="2" r="3" fill="#FFD166"/>
         </svg>
-
         <div class="cake-base">
-          <div class="cake-drip"></div>
           <div class="candle-stick">
             <div class="flame-element" id="candle-flame"></div>
           </div>
         </div>
       </div>
 
-      <button class="next-btn" id="btn-slide-1" onclick="goToSlide(2)">Continue to Slide 2 ➔</button>
+      <button class="action-btn" id="mic-btn">🎙️ Start Mic Detection</button>
+      <button class="next-btn" id="btn-slide-1" onclick="goToSlide(2)">Continue to Photo Booth ➔</button>
     </section>
 
-    <!-- SLIDE 2: SCRATCH CARD -->
+    <!-- SLIDE 2: PHOTO BOOTH + STICKERS -->
     <section class="slide-card" id="slide-2">
+      <h1 class="slide-title">Aesthetic Photo Booth</h1>
+      <p class="slide-subtitle">Snap a celebration selfie and overlay custom stickers!</p>
+
+      <div class="booth-container">
+        <video id="camera-feed" autoplay playsinline></video>
+        <canvas id="photo-canvas" style="display:none;"></canvas>
+      </div>
+
+      <div class="sticker-tray">
+        <button class="action-btn" onclick="capturePhoto()" style="margin:0;">📸 Snap Photo</button>
+      </div>
+
+      <button class="next-btn visible" id="btn-slide-2" onclick="goToSlide(3)">Continue to Secret Note ➔</button>
+    </section>
+
+    <!-- SLIDE 3: SCRATCH CARD -->
+    <section class="slide-card" id="slide-3">
       <h1 class="slide-title">Secret Scratch Note</h1>
-      <p class="slide-subtitle">Swipe or tap over the silver layer to reveal your special note!</p>
+      <p class="slide-subtitle">Swipe across the silver layer to unmask the hidden message!</p>
 
       <div class="scratch-container">
         <div class="scratch-secret">
-          <p>🎁 "You make every moment brighter! Hope your day is filled with absolute magic!" ✨</p>
+          <p>🎁 "Wishing you a year filled with grand mountain views, incredible creative triumphs, and absolute joy!" ✨</p>
         </div>
         <canvas id="scratch-canvas"></canvas>
-      </div>
-
-      <button class="next-btn visible" id="btn-slide-2" onclick="goToSlide(3)">Continue to Jukebox ➔</button>
-    </section>
-
-    <!-- SLIDE 3: VINYL JUKEBOX -->
-    <section class="slide-card" id="slide-3">
-      <h1 class="slide-title">Interactive Jukebox</h1>
-      <p class="slide-subtitle">Select a track below to start spinning the vinyl!</p>
-
-      <div class="vinyl-container" id="vinyl-record">
-        <div class="vinyl-grooves">
-          <div class="vinyl-label" id="vinyl-icon">🎵</div>
-        </div>
-      </div>
-
-      <div class="track-list">
-        <div class="track-item" onclick="playTrack(this, '🌸 Feel Good Vibes')">
-          <span>🌸 Track 01: Feel Good Vibes</span> <span>▶</span>
-        </div>
-        <div class="track-item" onclick="playTrack(this, '⭐ Acoustic Sunshine')">
-          <span>⭐ Track 02: Acoustic Sunshine</span> <span>▶</span>
-        </div>
-        <div class="track-item" onclick="playTrack(this, '🎉 Celebration Anthem')">
-          <span>🎉 Track 03: Celebration Anthem</span> <span>▶</span>
-        </div>
-      </div>
-
-      <button class="next-btn visible" id="btn-slide-3" onclick="goToSlide(4)">Continue to Pinboard ➔</button>
-    </section>
-
-    <!-- SLIDE 4: POLAROID PINBOARD -->
-    <section class="slide-card" id="slide-4">
-      <h1 class="slide-title">Memory Pinboard</h1>
-      <p class="slide-subtitle">Tap any polaroid frame to inspect the captured memory!</p>
-
-      <div class="polaroid-grid">
-        <div class="polaroid-card" onclick="inspectPolaroid('✈️ Spiti Valley Trip', 'Endless mountain roads & stunning valleys!')">
-          <div class="polaroid-img">🏔️</div>
-          <div class="polaroid-caption">Mountain Expedition</div>
-        </div>
-        <div class="polaroid-card" onclick="inspectPolaroid('🎨 Design Mastery', 'Crafting iconic packaging & branding layouts!')">
-          <div class="polaroid-img">🎨</div>
-          <div class="polaroid-caption">Creative Haven</div>
-        </div>
-        <div class="polaroid-card" onclick="inspectPolaroid('🎧 Cozy Acoustic Beats', 'Late night tunes and favorite song lyrics!')">
-          <div class="polaroid-img">🎵</div>
-          <div class="polaroid-caption">Acoustic Sessions</div>
-        </div>
-        <div class="polaroid-card" onclick="inspectPolaroid('☕ Bestie Banter', 'Unfiltered laughs & constant updates!')">
-          <div class="polaroid-img">☕</div>
-          <div class="polaroid-caption">Bestie Coffee Runs</div>
-        </div>
-      </div>
-
-      <button class="next-btn visible" id="btn-slide-4" onclick="goToSlide(5)">Continue to Bubble Wrap ➔</button>
-    </section>
-
-    <!-- SLIDE 5: BUBBLE WRAP -->
-    <section class="slide-card" id="slide-5">
-      <h1 class="slide-title">Tactile Bubble Wrap</h1>
-      <p class="slide-subtitle">Pop all 12 stress-relief bubbles to complete the experience!</p>
-
-      <div class="bubble-grid" id="bubble-grid">
-        <!-- 12 Bubbles -->
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-        <div class="bubble" onclick="popBubble(this)"></div>
-      </div>
-
-      <div class="final-badge" id="final-badge">
-        🎉 All Modules Completed! Have a wonderful celebration! 💖
       </div>
     </section>
 
   </main>
 
   <script>
-    // System Navigation Engine
     let currentSlide = 1;
+    const flame = document.getElementById('candle-flame');
+    const btnSlide1 = document.getElementById('btn-slide-1');
 
     function goToSlide(slideNum) {
       document.querySelectorAll('.slide-card').forEach(card => card.classList.remove('active'));
@@ -387,27 +295,84 @@
       if (targetCard) {
         targetCard.classList.add('active');
         currentSlide = slideNum;
-        document.getElementById('step-pill').innerText = `STAGE ${slideNum} / 5`;
-        if (slideNum === 2) initScratchCard();
+        document.getElementById('step-pill').innerText = `STAGE ${slideNum} / 3`;
+        if (slideNum === 2) startCamera();
+        if (slideNum === 3) initScratchCard();
       }
     }
 
-    // --- SLIDE 1: CANDLE ---
-    const flame = document.getElementById('candle-flame');
-    const candleTrigger = document.getElementById('candle-trigger');
-    const btnSlide1 = document.getElementById('btn-slide-1');
-
-    candleTrigger.addEventListener('click', () => {
+    function extinguishFlame() {
       flame.classList.add('extinguished');
       btnSlide1.classList.add('visible');
+    }
+
+    document.getElementById('candle-trigger').addEventListener('click', extinguishFlame);
+
+    // Mic Blow Detection Engine with Safe Fallback
+    document.getElementById('mic-btn').addEventListener('click', async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Microphone not available in this browser window. Tap the flame directly!");
+        return;
+      }
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const micCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const analyzer = micCtx.createAnalyser();
+        const micSource = micCtx.createMediaStreamSource(stream);
+        micSource.connect(analyzer);
+        analyzer.fftSize = 256;
+        const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+
+        document.getElementById('mic-btn').innerText = "🎙️ Listening... Blow now!";
+
+        function checkMic() {
+          if (flame.classList.contains('extinguished')) return;
+          analyzer.getByteFrequencyData(dataArray);
+          let sum = dataArray.reduce((a, b) => a + b, 0);
+          if ((sum / dataArray.length) > 38) {
+            extinguishFlame();
+            document.getElementById('mic-btn').innerText = "💨 Blow Detected!";
+            stream.getTracks().forEach(t => t.stop());
+            return;
+          }
+          requestAnimationFrame(checkMic);
+        }
+        checkMic();
+      } catch (err) {
+        alert("Microphone permission blocked. Tap the candle flame directly!");
+      }
     });
 
-    // --- SLIDE 2: SCRATCH CARD ENGINE ---
-    let scratchInitialized = false;
-    function initScratchCard() {
-      if (scratchInitialized) return;
-      scratchInitialized = true;
+    // Camera Booth Engine
+    async function startCamera() {
+      const video = document.getElementById('camera-feed');
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+        video.srcObject = stream;
+      } catch (e) {
+        console.warn("Camera blocked or unavailable.");
+      }
+    }
 
+    function capturePhoto() {
+      const video = document.getElementById('camera-feed');
+      const canvas = document.getElementById('photo-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = video.videoWidth || 300;
+      canvas.height = video.videoHeight || 220;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Apply aesthetic text tag overlay
+      ctx.font = '24px "Caveat", cursive';
+      ctx.fillStyle = '#FF82A9';
+      ctx.fillText('✨ Bestie Birthday Moments', 20, canvas.height - 20);
+
+      video.style.display = 'none';
+      canvas.style.display = 'block';
+    }
+
+    // Scratch Card Engine
+    function initScratchCard() {
       const canvas = document.getElementById('scratch-canvas');
       const ctx = canvas.getContext('2d');
       const parent = canvas.parentElement;
@@ -415,13 +380,12 @@
       canvas.width = parent.offsetWidth;
       canvas.height = parent.offsetHeight;
 
-      // Draw Silver Foil Layer
       ctx.fillStyle = '#C0C0C0';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.font = '600 16px "Fredoka", sans-serif';
-      ctx.fillStyle = '#666';
+      ctx.fillStyle = '#555';
       ctx.textAlign = 'center';
-      ctx.fillText('Scratch here with touch/mouse!', canvas.width / 2, canvas.height / 2);
+      ctx.fillText('Scratch with touch or cursor!', canvas.width / 2, canvas.height / 2);
 
       let isScratching = false;
 
@@ -430,46 +394,19 @@
         const rect = canvas.getBoundingClientRect();
         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
         const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
 
         ctx.globalCompositeOperation = 'destination-out';
         ctx.beginPath();
-        ctx.arc(x, y, 22, 0, Math.PI * 2);
+        ctx.arc(clientX - rect.left, clientY - rect.top, 22, 0, Math.PI * 2);
         ctx.fill();
       }
 
       canvas.addEventListener('mousedown', () => isScratching = true);
       canvas.addEventListener('mouseup', () => isScratching = false);
       canvas.addEventListener('mousemove', scratch);
-
       canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); });
       canvas.addEventListener('touchend', () => isScratching = false);
       canvas.addEventListener('touchmove', scratch);
-    }
-
-    // --- SLIDE 3: JUKEBOX ---
-    function playTrack(element, trackName) {
-      document.querySelectorAll('.track-item').forEach(el => el.classList.remove('active'));
-      element.classList.add('active');
-      const record = document.getElementById('vinyl-record');
-      record.classList.add('spinning');
-    }
-
-    // --- SLIDE 4: POLAROID INSPECTOR ---
-    function inspectPolaroid(title, text) {
-      alert(`${title}\n\n"${text}"`);
-    }
-
-    // --- SLIDE 5: BUBBLE WRAP ---
-    let poppedCount = 0;
-    function popBubble(element) {
-      if (element.classList.contains('popped')) return;
-      element.classList.add('popped');
-      poppedCount++;
-      if (poppedCount >= 12) {
-        document.getElementById('final-badge').style.display = 'block';
-      }
     }
   </script>
 </body>
