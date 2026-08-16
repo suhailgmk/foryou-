@@ -5,13 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Multiverse Haven | Interactive Experience</title>
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredoka:wght@500;600&family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
-
-  <!-- Anime.js for micro-animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
   <style>
     :root {
@@ -19,7 +15,6 @@
       --card-glass: rgba(255, 255, 255, 0.88);
       --card-border: rgba(255, 182, 193, 0.6);
       --accent-pink: #FF82A9;
-      --accent-warm: #FFB3C6;
       --accent-gold: #FFD166;
       --text-dark: #2B2D42;
       --font-handwriting: 'Caveat', cursive;
@@ -42,13 +37,11 @@
       overflow-x: hidden;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
     }
 
-    /* Ambient Dim Lighting Effect */
     #ambient-overlay {
       position: fixed;
       top: 0;
@@ -59,13 +52,10 @@
       z-index: 100;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: opacity 0.8s ease;
     }
-    body.dimmed #ambient-overlay {
-      opacity: 1;
-    }
+    body.dimmed #ambient-overlay { opacity: 1; }
 
-    /* High-DPI Background FX Canvas */
     #fx-canvas {
       position: fixed;
       top: 0;
@@ -76,7 +66,6 @@
       z-index: 150;
     }
 
-    /* Main Container Structure */
     .app-viewport {
       width: 100%;
       max-width: 440px;
@@ -85,13 +74,12 @@
       z-index: 200;
     }
 
-    /* Progress Stepper Header */
     .stepper-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.5rem;
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(8px);
       padding: 0.6rem 1rem;
       border-radius: 30px;
@@ -104,19 +92,14 @@
       background: #FFF;
       padding: 0.2rem 0.75rem;
       border-radius: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     .wish-counter-badge {
       font-family: var(--font-handwriting);
       font-size: 1.2rem;
       font-weight: 700;
       color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
     }
 
-    /* Slide Card Architecture */
     .slide-card {
       background: var(--card-glass);
       backdrop-filter: blur(16px);
@@ -125,9 +108,6 @@
       padding: 2rem 1.5rem;
       box-shadow: 0 12px 40px rgba(255, 130, 169, 0.15);
       text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.4s ease, opacity 0.4s ease;
     }
 
     .slide-title {
@@ -145,11 +125,10 @@
       line-height: 1.4;
     }
 
-    /* Interactive Candle Engine */
     .candle-stage {
       position: relative;
       width: 100%;
-      height: 220px;
+      height: 200px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -158,14 +137,12 @@
       cursor: pointer;
     }
 
-    /* Flork SVG Stylings */
     .flork-svg {
-      width: 140px;
+      width: 130px;
       height: auto;
       position: absolute;
-      top: 10px;
+      top: 0;
       z-index: 10;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
     }
 
     .cake-base {
@@ -176,7 +153,7 @@
       border-radius: 18px 18px 12px 12px;
       position: relative;
       z-index: 20;
-      box-shadow: 0 8px 0 #FFB3C6, 0 12px 20px rgba(0,0,0,0.06);
+      box-shadow: 0 8px 0 #FFB3C6;
     }
 
     .cake-drip {
@@ -229,16 +206,6 @@
       pointer-events: none;
     }
 
-    /* Smoke Particle Canvas Element */
-    .smoke-emitter {
-      position: absolute;
-      top: -35px;
-      left: 50%;
-      transform: translateX(-50%);
-      pointer-events: none;
-    }
-
-    /* Action Trigger Controls */
     .btn-group {
       display: flex;
       flex-direction: column;
@@ -257,11 +224,7 @@
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 4px 0 var(--text-dark);
-      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
 
     .action-btn:active {
@@ -274,7 +237,6 @@
       color: var(--text-dark);
     }
 
-    /* Unlock Banner Animation */
     .unlock-banner {
       display: none;
       margin-top: 1rem;
@@ -285,6 +247,12 @@
       color: #2E7D32;
       font-family: var(--font-playful);
       font-size: 0.95rem;
+      animation: fadeInUp 0.4s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -294,8 +262,6 @@
   <canvas id="fx-canvas"></canvas>
 
   <main class="app-viewport">
-
-    <!-- Progress Stepper Header -->
     <header class="stepper-bar">
       <span class="step-pill">STAGE 01 / 05</span>
       <div class="wish-counter-badge">
@@ -303,19 +269,16 @@
       </div>
     </header>
 
-    <!-- Slide 1 Card -->
-    <section class="slide-card" id="slide-1">
-      <h1 class="slide-title">The Birthday Wish Ritual</h1>
-      <p class="slide-subtitle">Blow into your microphone or tap the candle flame to blow it out and unlock Slide 2!</p>
+    <section class="slide-card">
+      <h1 class="slide-title">The Wish Ritual</h1>
+      <p class="slide-subtitle">Blow into your microphone or tap the flame to extinguish the candle!</p>
 
       <div class="candle-stage" id="candle-trigger">
-        <!-- Crisp Custom Inline Flork Vector SVG -->
         <svg class="flork-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M 20 80 C 20 40, 30 20, 50 20 C 70 20, 80 40, 80 80" stroke="#2B2D42" stroke-width="3.5" stroke-linecap="round" fill="white"/>
           <circle cx="40" cy="38" r="3" fill="#2B2D42"/>
           <circle cx="60" cy="38" r="3" fill="#2B2D42"/>
           <path d="M 42 48 Q 50 54 58 48" stroke="#2B2D42" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <!-- Party Hat -->
           <path d="M 38 21 L 50 2 L 62 21 Z" fill="#FF82A9" stroke="#2B2D42" stroke-width="2.5"/>
           <circle cx="50" cy="2" r="3" fill="#FFD166"/>
         </svg>
@@ -324,39 +287,40 @@
           <div class="cake-drip"></div>
           <div class="candle-stick">
             <div class="flame-element" id="candle-flame"></div>
-            <div class="smoke-emitter" id="smoke-emitter"></div>
           </div>
         </div>
       </div>
 
       <div class="btn-group">
         <button class="action-btn" id="mic-btn">🎙️ Enable Mic Blow-Out</button>
-        <button class="action-btn secondary" id="dim-btn">💡 Toggle Cozy Room Lights</button>
+        <button class="action-btn secondary" id="dim-btn">💡 Toggle Dim Lights</button>
       </div>
 
       <div class="unlock-banner" id="unlock-banner">
-        ✨ Wish Saved! Unlocking Slide 2: Scratch Card...
+        ✨ Wish Saved! Stage 1 Complete.
       </div>
     </section>
-
   </main>
 
   <script>
-    // System State Storage
-    const STATE_KEY = 'multiverse_haven_state';
-    let appState = JSON.parse(localStorage.getItem(STATE_KEY)) || {
-      wishes: 0,
-      slideUnlocked: 1,
-      candleBlown: false
-    };
+    // Safe Local Storage Engine
+    let appState = { wishes: 0, candleBlown: false };
+    try {
+      const stored = localStorage.getItem('multiverse_haven_state');
+      if (stored) appState = JSON.parse(stored);
+    } catch (e) {
+      console.warn('Storage blocked, falling back to memory state.');
+    }
 
     function saveState() {
-      localStorage.setItem(STATE_KEY, JSON.stringify(appState));
+      try {
+        localStorage.setItem('multiverse_haven_state', JSON.stringify(appState));
+      } catch (e) {}
       document.getElementById('wish-count-display').innerText = appState.wishes;
     }
     saveState();
 
-    // High-DPI Canvas Scaling Engine
+    // Canvas Engine
     const canvas = document.getElementById('fx-canvas');
     const ctx = canvas.getContext('2d');
     let dpr = window.devicePixelRatio || 1;
@@ -365,34 +329,32 @@
       dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Web Audio Synthesizer (Zero External Dependencies)
+    // Safe Web Audio Engine
     let audioCtx = null;
-    function playAudioTone(freq, type, duration) {
+    function playAudioTone(freq, duration) {
       try {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
-        
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = type;
         osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch (e) { console.log('Audio Context ready'); }
+      } catch (e) {}
     }
 
-    // Candle Extinguish & Particle FX
+    // Extinguish Action
     const flame = document.getElementById('candle-flame');
-    const cakeTrigger = document.getElementById('cake-trigger');
+    const cakeTrigger = document.getElementById('candle-trigger');
     const unlockBanner = document.getElementById('unlock-banner');
 
     function blowOutCandle() {
@@ -400,84 +362,70 @@
 
       appState.candleBlown = true;
       appState.wishes += 1;
-      appState.slideUnlocked = Math.max(appState.slideUnlocked, 2);
       saveState();
 
       flame.classList.add('extinguished');
       document.body.classList.add('dimmed');
-      playAudioTone(220, 'sine', 0.6);
+      playAudioTone(261, 0.4);
 
-      // Trigger Anime.js Particle Burst
       spawnSparkles();
-
       unlockBanner.style.display = 'block';
-      anime({
-        targets: '#unlock-banner',
-        translateY: [15, 0],
-        opacity: [0, 1],
-        duration: 600,
-        easing: 'easeOutBack'
-      });
     }
 
     cakeTrigger.addEventListener('click', blowOutCandle);
 
-    // Dim Lighting Button
     document.getElementById('dim-btn').addEventListener('click', () => {
       document.body.classList.toggle('dimmed');
-      playAudioTone(440, 'triangle', 0.1);
+      playAudioTone(440, 0.1);
     });
 
-    // Web Audio Microphone Breath Blow Detection
+    // Mic Blow-Out Handler
     const micBtn = document.getElementById('mic-btn');
-    let micStream = null;
-
     micBtn.addEventListener('click', async () => {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Microphone access is blocked in this view mode. Tap the candle directly!");
+        return;
+      }
       try {
-        micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        const micAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const analyzer = micAudioCtx.createAnalyser();
-        const microphone = micAudioCtx.createMediaStreamSource(micStream);
-        microphone.connect(analyzer);
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const micCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const analyzer = micCtx.createAnalyser();
+        const micSource = micCtx.createMediaStreamSource(stream);
+        micSource.connect(analyzer);
         analyzer.fftSize = 256;
-        const bufferLength = analyzer.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
+        const dataArray = new Uint8Array(analyzer.frequencyBinCount);
 
         micBtn.innerText = "🎙️ Listening... Blow now!";
         micBtn.style.background = "#4CAF50";
 
-        function checkBlow() {
+        function checkMic() {
           if (appState.candleBlown) return;
           analyzer.getByteFrequencyData(dataArray);
-          let sum = 0;
-          for (let i = 0; i < bufferLength; i++) { sum += dataArray[i]; }
-          let average = sum / bufferLength;
-
-          // Threshold for breath blow detection
-          if (average > 45) {
+          let sum = dataArray.reduce((a, b) => a + b, 0);
+          if ((sum / dataArray.length) > 40) {
             blowOutCandle();
             micBtn.innerText = "💨 Blow Detected!";
-            if (micStream) micStream.getTracks().forEach(track => track.stop());
+            stream.getTracks().forEach(t => t.stop());
             return;
           }
-          requestAnimationFrame(checkBlow);
+          requestAnimationFrame(checkMic);
         }
-        checkBlow();
+        checkMic();
       } catch (err) {
-        alert("Microphone access denied or unsupported. You can still tap the candle flame!");
+        alert("Microphone requires HTTPS or direct browser window. Tap the candle flame instead!");
       }
     });
 
-    // Canvas Sparkle Particles
+    // Particle Burst Canvas
     let particles = [];
     function spawnSparkles() {
       const rect = flame.getBoundingClientRect();
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 25; i++) {
         particles.push({
           x: rect.left + rect.width / 2,
           y: rect.top,
-          vx: (Math.random() - 0.5) * 6,
-          vy: (Math.random() - 1) * 6,
+          vx: (Math.random() - 0.5) * 5,
+          vy: (Math.random() - 1) * 5,
           alpha: 1,
           size: Math.random() * 4 + 2,
           color: ['#FFD166', '#FF82A9', '#FFF'][Math.floor(Math.random() * 3)]
@@ -486,8 +434,8 @@
     }
 
     function renderFX() {
-      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-      particles.forEach((p, index) => {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
@@ -495,7 +443,7 @@
         ctx.fill();
         p.x += p.vx;
         p.y += p.vy;
-        p.alpha -= 0.02;
+        p.alpha -= 0.025;
       });
       particles = particles.filter(p => p.alpha > 0);
       requestAnimationFrame(renderFX);
