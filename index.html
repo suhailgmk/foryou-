@@ -3,29 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For My Bestie | The Multiverse Vault</title>
+  <title>For My Bestie | Multiverse Vault 🌼</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #1e112a, #0c0d14 70%);
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --accent-gold: #f59e0b;
-      --accent-glow: rgba(245, 158, 11, 0.25);
-      --spider-pink: #ec4899;
-      --conrad-blue: #3b82f6;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #2a1b3d, #130f26 80%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 200, 221, 0.2);
+      --accent-pink: #ffb7b2;
+      --accent-yellow: #ffdac1;
+      --accent-glow: rgba(255, 183, 178, 0.35);
+      --text-main: #fff0f5;
+      --text-sub: #d8b4e2;
     }
 
     [data-theme="conrad"] {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #0f172a, #020617 70%);
-      --card-bg: rgba(56, 189, 248, 0.03);
-      --card-border: rgba(56, 189, 248, 0.15);
-      --accent-gold: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.25);
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0f2b46, #08121e 80%);
+      --card-bg: rgba(180, 235, 255, 0.05);
+      --card-border: rgba(180, 235, 255, 0.25);
+      --accent-pink: #b5ead7;
+      --accent-yellow: #e2f0cb;
+      --accent-glow: rgba(181, 234, 215, 0.35);
+      --text-main: #f0fdf4;
+      --text-sub: #99f6e4;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,115 +35,118 @@
     body {
       background: var(--bg-gradient);
       color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Quicksand', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
-      padding-bottom: 80px;
+      padding-bottom: 90px;
       transition: background 0.8s ease;
     }
 
-    /* Ambient Glow Spots */
-    .glow-spot-1 {
-      position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 600px; background: var(--accent-glow);
-      filter: blur(140px); border-radius: 50%; pointer-events: none; z-index: 0;
+    /* Soft Floating Ambient Glow Orbs */
+    .orb-1 {
+      position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 500px; background: var(--accent-glow);
+      filter: blur(130px); border-radius: 50%; pointer-events: none; z-index: 0;
     }
 
     .container {
-      max-width: 850px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 30px 20px;
       position: relative;
       z-index: 10;
     }
 
-    /* Floating Navigation Toggle */
+    /* Cute Header Navigation */
     .top-nav {
       display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 40px; padding: 12px 24px;
-      background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
-      border: 1px solid var(--card-border); border-radius: 40px;
+      margin-bottom: 35px; padding: 14px 28px;
+      background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    .brand { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.1rem; color: var(--accent-gold); }
+    .brand { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--accent-yellow); letter-spacing: 0.5px; }
     .theme-btn {
-      background: rgba(255, 255, 255, 0.06); border: 1px solid var(--card-border);
-      color: #fff; padding: 8px 18px; border-radius: 20px; font-weight: 600;
-      font-size: 0.8rem; cursor: pointer; transition: all 0.3s ease;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow));
+      border: none; color: #2a1b3d; padding: 10px 22px; border-radius: 30px; font-weight: 700;
+      font-size: 0.85rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 15px var(--accent-glow);
     }
-    .theme-btn:hover { background: var(--accent-gold); color: #000; box-shadow: 0 0 15px var(--accent-glow); }
+    .theme-btn:hover { transform: scale(1.08); }
 
-    /* Module Glass Cards */
+    /* Cute Module Cards */
     .module-card {
       background: var(--card-bg); backdrop-filter: blur(25px);
-      border: 1px solid var(--card-border); border-radius: 24px;
+      border: 1.5px solid var(--card-border); border-radius: 30px;
       padding: 32px; margin-bottom: 28px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
       transition: transform 0.3s ease, border-color 0.3s ease;
     }
-    .module-card:hover { border-color: var(--accent-gold); }
+    .module-card:hover { border-color: var(--accent-pink); transform: translateY(-2px); }
 
     h2 {
-      font-family: 'Playfair Display', serif; font-size: 1.6rem;
-      color: var(--accent-gold); margin-bottom: 8px; display: flex; align-items: center; gap: 12px;
+      font-family: 'Fredoka', sans-serif; font-size: 1.5rem;
+      color: var(--accent-yellow); margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
     }
-    .subtitle { font-size: 0.88rem; color: var(--text-sub); margin-bottom: 24px; line-height: 1.5; }
+    .subtitle { font-size: 0.9rem; color: var(--text-sub); margin-bottom: 22px; line-height: 1.5; font-weight: 500; }
 
-    /* Interactive Elements */
+    /* Cute Buttons */
     .action-btn {
-      background: linear-gradient(135deg, var(--accent-gold), #d97706);
-      color: #0b0c10; font-weight: 700; border: none; padding: 12px 24px;
-      border-radius: 14px; cursor: pointer; font-size: 0.88rem;
-      transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow));
+      color: #2a1b3d; font-family: 'Fredoka', sans-serif; font-weight: 600; border: none; padding: 12px 26px;
+      border-radius: 20px; cursor: pointer; font-size: 0.95rem;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 20px var(--accent-glow);
     }
-    .action-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px var(--accent-glow); }
+    .action-btn:hover { transform: translateY(-3px) scale(1.03); }
 
     .easter-egg {
-      color: var(--accent-gold); font-weight: 700; cursor: pointer;
+      color: var(--accent-yellow); font-weight: 700; cursor: pointer;
       text-decoration: underline dotted; transition: color 0.2s;
     }
-    .easter-egg:hover { color: var(--spider-pink); }
+    .easter-egg:hover { color: var(--accent-pink); }
 
-    /* Module-Specific Styles */
-    .candle-wrapper { text-align: center; padding: 20px 0; }
-    .candle-icon { font-size: 4.5rem; cursor: pointer; transition: transform 0.3s; display: inline-block; filter: drop-shadow(0 0 15px var(--accent-glow)); }
-    .candle-icon:hover { transform: scale(1.1); }
+    /* Module Interactive Styling */
+    .candle-wrapper { text-align: center; padding: 10px 0; }
+    .candle-icon { font-size: 4.8rem; cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: inline-block; filter: drop-shadow(0 0 20px var(--accent-glow)); }
+    .candle-icon:hover { transform: scale(1.15) rotate(5deg); }
 
-    canvas { display: block; margin: 0 auto; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid var(--card-border); }
+    canvas { display: block; margin: 0 auto; background: rgba(0,0,0,0.15); border-radius: 24px; border: 1.5px solid var(--card-border); }
 
-    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
     .flip-card { height: 140px; perspective: 1000px; cursor: pointer; }
     .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
     .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
     .flip-front, .flip-back {
       position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
-      border-radius: 18px; display: flex; align-items: center; justify-content: center;
-      padding: 20px; text-align: center; border: 1px solid var(--card-border);
-      background: rgba(255, 255, 255, 0.02); font-weight: 600; font-size: 0.95rem;
+      border-radius: 24px; display: flex; align-items: center; justify-content: center;
+      padding: 20px; text-align: center; border: 1.5px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03); font-weight: 600; font-size: 0.95rem;
     }
-    .flip-back { background: linear-gradient(135deg, var(--accent-gold), #d97706); color: #0b0c10; font-weight: 800; transform: rotateY(180deg); }
+    .flip-back { background: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow)); color: #2a1b3d; font-family: 'Fredoka', sans-serif; font-weight: 700; transform: rotateY(180deg); }
 
     .chat-box {
-      background: rgba(0, 0, 0, 0.3); border-radius: 16px; padding: 18px;
+      background: rgba(0, 0, 0, 0.25); border-radius: 20px; padding: 18px;
       height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
-      border: 1px solid var(--card-border);
+      border: 1.5px solid var(--card-border);
     }
-    .chat-msg { padding: 10px 16px; border-radius: 14px; font-size: 0.85rem; max-width: 80%; }
-    .chat-msg.them { background: rgba(255, 255, 255, 0.08); align-self: flex-start; }
-    .chat-msg.me { background: var(--accent-gold); color: #000; font-weight: 700; align-self: flex-end; }
+    .chat-msg { padding: 10px 16px; border-radius: 18px; font-size: 0.9rem; max-width: 80%; font-weight: 600; }
+    .chat-msg.them { background: rgba(255, 255, 255, 0.1); align-self: flex-start; }
+    .chat-msg.me { background: linear-gradient(135deg, var(--accent-pink), var(--accent-yellow)); color: #2a1b3d; align-self: flex-end; }
 
-    .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; }
+    .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 14px; }
     .badge-item {
-      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border);
-      border-radius: 18px; padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.03); border: 1.5px solid var(--card-border);
+      border-radius: 24px; padding: 20px 12px; text-align: center; cursor: pointer; transition: all 0.3s ease;
     }
-    .badge-item:hover { background: rgba(255, 255, 255, 0.06); transform: translateY(-4px); border-color: var(--accent-gold); }
+    .badge-item:hover { background: rgba(255, 255, 255, 0.08); transform: translateY(-4px) scale(1.02); border-color: var(--accent-pink); }
 
     .sound-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
   </style>
 </head>
 <body>
 
-  <div class="glow-spot-1"></div>
+  <div class="orb-1"></div>
 
   <div class="container">
 
@@ -155,18 +160,18 @@
     <div class="module-card">
       <div class="candle-wrapper">
         <h2>🎂 Celebration Ritual</h2>
-        <p class="subtitle">A glowing multiverse milestone space crafted for you. Tap the candle to ignite confetti!</p>
+        <p class="subtitle">A special multiverse space crafted just for you. Tap the candle to start the celebration!</p>
         <div class="candle-icon" id="candle" onclick="extinguishCandle()">🕯️</div>
-        <p id="candleStatus" style="font-size: 0.85rem; color: var(--accent-gold); margin-top: 12px; font-weight: 600;">Flame is burning bright!</p>
+        <p id="candleStatus" style="font-size: 0.9rem; color: var(--accent-yellow); margin-top: 14px; font-weight: 700;">Flame is burning bright!</p>
       </div>
     </div>
 
-    <!-- Module 2: The Sunflower Theory Physics Canvas -->
+    <!-- Module 2: Sunflower Theory Mechanics -->
     <div class="module-card">
       <h2>🌻 Sunflower Theory Mechanics</h2>
-      <p class="subtitle">Sunflowers don't look for light on cloudy days—they turn toward each other. Move your mouse or touch below:</p>
+      <p class="subtitle">Sunflowers don't look for light on cloudy days—they turn toward each other. Move your cursor or touch below:</p>
       <canvas id="sunflowerCanvas" width="320" height="200"></canvas>
-      <p style="text-align: center; font-size: 0.85rem; color: var(--text-sub); margin-top: 14px; font-style: italic;">
+      <p style="text-align: center; font-size: 0.9rem; color: var(--text-sub); margin-top: 16px; font-weight: 600;">
         "In every universe, my attention naturally turns toward you."
       </p>
     </div>
@@ -175,24 +180,24 @@
     <div class="module-card">
       <h2>🌼 Yellow Paper Daisy Jukebox</h2>
       <p class="subtitle">When Chai Met Toast — Lyric Vault</p>
-      <div style="background: rgba(0, 0, 0, 0.3); padding: 20px; border-radius: 16px; text-align: center; border: 1px solid var(--card-border);">
-        <p style="font-weight: 700; margin-bottom: 8px;">🎵 Currently Playing: Yellow Paper Daisy</p>
-        <p style="font-size: 0.95rem; font-style: italic; color: var(--accent-gold); margin-bottom: 20px;" id="lyricDisplay">"Oh, you complete me like cherry on ice cream..."</p>
+      <div style="background: rgba(0, 0, 0, 0.25); padding: 22px; border-radius: 20px; text-align: center; border: 1.5px solid var(--card-border);">
+        <p style="font-weight: 700; margin-bottom: 10px;">🎵 Currently Playing: Yellow Paper Daisy</p>
+        <p style="font-size: 1rem; font-style: italic; color: var(--accent-yellow); margin-bottom: 20px; font-weight: 600;" id="lyricDisplay">"Oh, you complete me like cherry on ice cream..."</p>
         <button class="action-btn" onclick="nextLyric()">Next Lyric Line 🎶</button>
       </div>
     </div>
 
-    <!-- Module 4: Dynamic Theme Switcher Card -->
+    <!-- Module 4: Aesthetic Matrix -->
     <div class="module-card">
-      <h2>🎨 Aesthetic Lighting Matrix</h2>
-      <p class="subtitle">Toggle ambient lighting seamlessly using the top header button.</p>
-      <p style="font-size: 0.9rem;">Active Mode: <span id="currentThemeLabel" style="color: var(--accent-gold); font-weight: 700;">Spider-Verse Neon Glow</span></p>
+      <h2>🎨 Aesthetic Shift Protocol</h2>
+      <p class="subtitle">Toggle ambient vibes effortlessly using the top button.</p>
+      <p style="font-size: 0.95rem; font-weight: 600;">Active Glow: <span id="currentThemeLabel" style="color: var(--accent-yellow); font-weight: 700;">Spider-Verse Pastel Glow</span></p>
     </div>
 
     <!-- Module 5: Banter Flip Board -->
     <div class="module-card">
       <h2>🤪 Aee Lala, Let's Settle This!</h2>
-      <p class="subtitle">Tap cards to flip and settle friendly debates:</p>
+      <p class="subtitle">Tap cards to flip and reveal friendly truths:</p>
       <div class="flip-grid">
         <div class="flip-card" onclick="this.classList.toggle('flipped')">
           <div class="flip-inner">
@@ -219,43 +224,43 @@
     <div class="module-card" style="text-align: center;">
       <h2>🕸️ Spider-Sense Predictor</h2>
       <p class="subtitle">Tap the orb for instant predictions</p>
-      <div id="orb" onclick="predictFortune()" style="width: 80px; height: 80px; background: radial-gradient(circle, var(--accent-gold), #000); border-radius: 50%; margin: 0 auto; cursor: pointer; box-shadow: 0 0 25px var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">🔮</div>
-      <p id="predictionText" style="margin-top: 18px; font-weight: 600; color: var(--accent-gold);">Tap orb to activate...</p>
+      <div id="orb" onclick="predictFortune()" style="width: 85px; height: 85px; background: radial-gradient(circle, var(--accent-pink), var(--accent-yellow)); border-radius: 50%; margin: 0 auto; cursor: pointer; box-shadow: 0 0 25px var(--accent-glow); display: flex; align-items: center; justify-content: center; font-size: 2rem; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🔮</div>
+      <p id="predictionText" style="margin-top: 20px; font-weight: 700; color: var(--accent-yellow);">Tap orb to activate...</p>
     </div>
 
     <!-- Module 7: Wheel of Fate -->
     <div class="module-card" style="text-align: center;">
       <h2>🎡 Web of Fate Perk Wheel</h2>
-      <p class="subtitle">Claim your guaranteed bestie privilege</p>
+      <p class="subtitle">Claim your guaranteed bestie perk</p>
       <button class="action-btn" onclick="spinWheel()">Spin Wheel 🎯</button>
-      <p id="wheelResult" style="margin-top: 18px; font-weight: 700; color: var(--accent-gold);"></p>
+      <p id="wheelResult" style="margin-top: 20px; font-weight: 700; color: var(--accent-yellow);"></p>
     </div>
 
-    <!-- Module 8: Multiversal Fortune Cookie -->
+    <!-- Module 8: Fortune Cookie -->
     <div class="module-card" style="text-align: center;">
       <h2>🥠 Multiversal Fortune Cookie</h2>
       <p class="subtitle">Crack open endlessly for random fortunes</p>
       <button class="action-btn" onclick="crackCookie()">Crack Cookie 🥠</button>
-      <p id="cookieText" style="margin-top: 18px; font-style: italic; color: var(--text-main);"></p>
+      <p id="cookieText" style="margin-top: 20px; font-style: italic; color: var(--text-main); font-weight: 600;"></p>
     </div>
 
-    <!-- Module 9: "Chal Jhuttee" Myth-Buster -->
+    <!-- Module 9: Myth-Buster -->
     <div class="module-card">
-      <h2>💥 "Chal Jhuttee" Myth-Buster</h2>
+      <h2>💥 "Chal Jhuttee" Myth-Buster Board</h2>
       <p class="subtitle">Setting records straight</p>
       <div style="display: flex; flex-direction: column; gap: 12px;">
-        <div style="background: rgba(255,255,255,0.02); padding: 14px 18px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border);">
-          <span style="font-size: 0.88rem;">Myth: You ever walk alone on cloudy days.</span>
-          <button class="action-btn" style="padding: 6px 12px; font-size: 0.75rem;" onclick="alert('FALSE! Always turned toward you like a sunflower.')">Bust Myth ❌</button>
+        <div style="background: rgba(255,255,255,0.03); padding: 14px 18px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1.5px solid var(--card-border);">
+          <span style="font-size: 0.9rem; font-weight: 600;">Myth: You ever walk alone on cloudy days.</span>
+          <button class="action-btn" style="padding: 6px 14px; font-size: 0.8rem;" onclick="alert('FALSE! Always turned toward you like a sunflower.')">Bust Myth ❌</button>
         </div>
-        <div style="background: rgba(255,255,255,0.02); padding: 14px 18px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border);">
-          <span style="font-size: 0.88rem;">Myth: Chai tastes better without talks.</span>
-          <button class="action-btn" style="padding: 6px 12px; font-size: 0.75rem;" onclick="alert('FALSE! Chai + Pahaad talks win every time.')">Bust Myth ❌</button>
+        <div style="background: rgba(255,255,255,0.03); padding: 14px 18px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; border: 1.5px solid var(--card-border);">
+          <span style="font-size: 0.9rem; font-weight: 600;">Myth: Chai tastes better without talks.</span>
+          <button class="action-btn" style="padding: 6px 14px; font-size: 0.8rem;" onclick="alert('FALSE! Chai + Pahaad talks win every time.')">Bust Myth ❌</button>
         </div>
       </div>
     </div>
 
-    <!-- Module 10: 2 AM Listener Log -->
+    <!-- Module 10: 2 AM Listener Console -->
     <div class="module-card">
       <h2>🎧 2 AM Listener Console</h2>
       <p class="subtitle">Instant Reply Simulator (0.01s Latency)</p>
@@ -263,7 +268,7 @@
         <div class="chat-msg them">Hey, you awake? Need to vent...</div>
       </div>
       <div style="display: flex; gap: 10px; margin-top: 14px;">
-        <input type="text" id="chatInput" placeholder="Type a vent message..." style="flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); padding: 12px; border-radius: 12px; color: #fff; font-size: 0.85rem;">
+        <input type="text" id="chatInput" placeholder="Type a vent message..." style="flex: 1; background: rgba(0,0,0,0.25); border: 1.5px solid var(--card-border); padding: 12px 16px; border-radius: 16px; color: #fff; font-size: 0.9rem; font-family: 'Quicksand', sans-serif;">
         <button class="action-btn" onclick="sendVent()">Vent Now ⚡</button>
       </div>
     </div>
@@ -274,39 +279,39 @@
       <p class="subtitle">Locked strictly at 100% Top Tier</p>
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div>
-          <label style="display: block; font-size: 0.85rem; margin-bottom: 6px;">Reply Speed: 100%</label>
-          <input type="range" min="100" max="100" value="100" style="width: 100%; accent-color: var(--accent-gold);">
+          <label style="display: block; font-size: 0.9rem; margin-bottom: 6px; font-weight: 600;">Reply Speed: 100%</label>
+          <input type="range" min="100" max="100" value="100" style="width: 100%; accent-color: var(--accent-pink);">
         </div>
         <div>
-          <label style="display: block; font-size: 0.85rem; margin-bottom: 6px;">Listening Patience: 100%</label>
-          <input type="range" min="100" max="100" value="100" style="width: 100%; accent-color: var(--accent-gold);">
+          <label style="display: block; font-size: 0.9rem; margin-bottom: 6px; font-weight: 600;">Listening Patience: 100%</label>
+          <input type="range" min="100" max="100" value="100" style="width: 100%; accent-color: var(--accent-pink);">
         </div>
         <div>
-          <label style="display: block; font-size: 0.85rem; margin-bottom: 6px;">Bestie Loyalty: 100%</label>
-          <input type="range" min="100" max="100" value="100" style="width: 100%; accent-color: var(--accent-gold);">
+          <label style="display: block; font-size: 0.9rem; margin-bottom: 6px; font-weight: 600;">Bestie Loyalty: 100%</label>
+          <input type="range" min="100" max="100" value="100" style="width: 100%; accent-color: var(--accent-pink);">
         </div>
       </div>
     </div>
 
-    <!-- Module 12: Canon Event Badges -->
+    <!-- Module 12: Canon Badges -->
     <div class="module-card">
       <h2>🏆 Multiverse Canon Badges</h2>
       <p class="subtitle">Tap a badge to reveal criteria</p>
       <div class="badge-grid">
         <div class="badge-item" onclick="alert('Unlocked: Safe Haven Badge - Always here to listen!')">
-          <div style="font-size: 2rem; margin-bottom: 8px;">🛡️</div>
+          <div style="font-size: 2rem; margin-bottom: 6px;">🛡️</div>
           <div style="font-weight: 700; font-size: 0.85rem;">Safe Haven</div>
         </div>
         <div class="badge-item" onclick="alert('Unlocked: Team Conrad Energy - Pure summer calm vibes!')">
-          <div style="font-size: 2rem; margin-bottom: 8px;">🌊</div>
+          <div style="font-size: 2rem; margin-bottom: 6px;">🌊</div>
           <div style="font-weight: 700; font-size: 0.85rem;"><span class="easter-egg">Conrad</span> Vibe</div>
         </div>
         <div class="badge-item" onclick="alert('Unlocked: Fast Reply Pass - Faster than Spider-Sense!')">
-          <div style="font-size: 2rem; margin-bottom: 8px;">⚡</div>
+          <div style="font-size: 2rem; margin-bottom: 6px;">⚡</div>
           <div style="font-weight: 700; font-size: 0.85rem;">Fast Reply</div>
         </div>
         <div class="badge-item" onclick="alert('Unlocked: Jackpot Bestie - Rare find!')">
-          <div style="font-size: 2rem; margin-bottom: 8px;">💎</div>
+          <div style="font-size: 2rem; margin-bottom: 6px;">💎</div>
           <div style="font-weight: 700; font-size: 0.85rem;">Jackpot Hit</div>
         </div>
       </div>
@@ -317,17 +322,17 @@
       <h2>📸 Multiverse Polaroids</h2>
       <p class="subtitle">Interactive memory reel</p>
       <div style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px;">
-        <div style="background: #fff; color: #000; padding: 12px; border-radius: 12px; min-width: 150px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
-          <div style="height: 110px; background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 8px; margin-bottom: 10px;"></div>
-          <span style="font-size: 0.75rem; font-weight: 800;">Summer Skies</span>
+        <div style="background: #fff; color: #2a1b3d; padding: 12px; border-radius: 18px; min-width: 150px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+          <div style="height: 110px; background: linear-gradient(135deg, #a1c4fd, #c2e9fb); border-radius: 12px; margin-bottom: 10px;"></div>
+          <span style="font-size: 0.8rem; font-weight: 800;">Summer Skies</span>
         </div>
-        <div style="background: #fff; color: #000; padding: 12px; border-radius: 12px; min-width: 150px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
-          <div style="height: 110px; background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 8px; margin-bottom: 10px;"></div>
-          <span style="font-size: 0.75rem; font-weight: 800;">Yellow Daisies</span>
+        <div style="background: #fff; color: #2a1b3d; padding: 12px; border-radius: 18px; min-width: 150px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+          <div style="height: 110px; background: linear-gradient(135deg, #ffecd2, #fcb69f); border-radius: 12px; margin-bottom: 10px;"></div>
+          <span style="font-size: 0.8rem; font-weight: 800;">Yellow Daisies</span>
         </div>
-        <div style="background: #fff; color: #000; padding: 12px; border-radius: 12px; min-width: 150px; text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">
-          <div style="height: 110px; background: linear-gradient(135deg, #ec4899, #f472b6); border-radius: 8px; margin-bottom: 10px;"></div>
-          <span style="font-size: 0.75rem; font-weight: 800;">Pahaad & Chai</span>
+        <div style="background: #fff; color: #2a1b3d; padding: 12px; border-radius: 18px; min-width: 150px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+          <div style="height: 110px; background: linear-gradient(135deg, #ff9a9e, #fecfef); border-radius: 12px; margin-bottom: 10px;"></div>
+          <span style="font-size: 0.8rem; font-weight: 800;">Pahaad & Chai</span>
         </div>
       </div>
     </div>
@@ -344,28 +349,28 @@
       <h2>✨ Endless Bestie Compliment Generator</h2>
       <p class="subtitle">Click endlessly for witty appreciation</p>
       <button class="action-btn" onclick="generateCompliment()">Generate Compliment 💖</button>
-      <p id="complimentText" style="margin-top: 18px; font-weight: 700; color: var(--accent-gold);"></p>
+      <p id="complimentText" style="margin-top: 20px; font-weight: 700; color: var(--accent-yellow);"></p>
     </div>
 
     <!-- Module 16: Escape Planner -->
     <div class="module-card">
       <h2>🏔️ Pahaad & Chai Escape Planner</h2>
       <p class="subtitle">Select your ultimate mountain trip setup:</p>
-      <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem;">
-        <label><input type="checkbox" checked style="accent-color: var(--accent-gold);"> Hot Adrak Chai in kulhad ☕</label>
-        <label><input type="checkbox" checked style="accent-color: var(--accent-gold);"> Silent valley view & cold breeze 🏔️</label>
-        <label><input type="checkbox" checked style="accent-color: var(--accent-gold);"> When Chai Met Toast playlist 🎧</label>
-        <label><input type="checkbox" checked style="accent-color: var(--accent-gold);"> Zero stress & endless talks 💬</label>
+      <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.95rem; font-weight: 600;">
+        <label><input type="checkbox" checked style="accent-color: var(--accent-pink);"> Hot Adrak Chai in kulhad ☕</label>
+        <label><input type="checkbox" checked style="accent-color: var(--accent-pink);"> Silent valley view & cold breeze 🏔️</label>
+        <label><input type="checkbox" checked style="accent-color: var(--accent-pink);"> When Chai Met Toast playlist 🎧</label>
+        <label><input type="checkbox" checked style="accent-color: var(--accent-pink);"> Zero stress & endless talks 💬</label>
       </div>
-      <button class="action-btn" style="margin-top: 18px;" onclick="alert('Itinerary Locked! Mountains calling! 🏔️')">Lock Itinerary 🚀</button>
+      <button class="action-btn" style="margin-top: 20px;" onclick="alert('Itinerary Locked! Mountains calling! 🏔️')">Lock Itinerary 🚀</button>
     </div>
 
     <!-- Module 17: Chai Reminder -->
     <div class="module-card" style="text-align: center;">
       <h2>☕ "Oiii, Sip Some Chai!" Break Reminder</h2>
       <p class="subtitle">Tap to brew hot tea</p>
-      <div id="teaCup" onclick="fillTea()" style="font-size: 3.5rem; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🫖</div>
-      <p id="teaStatus" style="font-size: 0.85rem; color: var(--text-sub); margin-top: 10px;">Tap to brew...</p>
+      <div id="teaCup" onclick="fillTea()" style="font-size: 3.8rem; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">🫖</div>
+      <p id="teaStatus" style="font-size: 0.9rem; color: var(--text-sub); margin-top: 10px; font-weight: 600;">Tap to brew...</p>
     </div>
 
     <!-- Module 18: Secret Vault -->
@@ -391,12 +396,12 @@
       <h2>💌 Unsealable Secret Letter</h2>
       <p class="subtitle">Encrypted & Transmitted with care</p>
       <button class="action-btn" id="unsealBtn" onclick="unsealLetter()">Unseal Letter 🔓</button>
-      <div id="letterContent" style="display: none; text-align: left; margin-top: 24px; line-height: 1.7; font-size: 0.95rem; background: rgba(0,0,0,0.3); padding: 24px; border-radius: 16px; border: 1px dashed var(--accent-gold);">
+      <div id="letterContent" style="display: none; text-align: left; margin-top: 24px; line-height: 1.8; font-size: 0.95rem; background: rgba(0,0,0,0.25); padding: 26px; border-radius: 20px; border: 1.5px dashed var(--accent-pink); font-weight: 500;">
         <p>Hey Bestie,</p><br>
         <p>If you're reading this, I just want you to know how deeply valued you are. Like a sunflower turned toward light, or a rare yellow paper daisy that never fades—you bring so much warmth into my quiet days.</p><br>
         <p>No matter how chaotic life gets or how cloudy the skies turn, remember you always have a dedicated listener by your side. Zero judgment, fast replies, and endless support.</p><br>
         <p>Here's to endless chai, mountain escapes, and unforgettable moments ahead. You're an absolute gem!</p><br>
-        <p style="font-weight: 700; color: var(--accent-gold);">Always keeping you by my side. ✨</p>
+        <p style="font-weight: 700; color: var(--accent-yellow);">Always keeping you by my side. ✨</p>
       </div>
     </div>
 
@@ -415,7 +420,7 @@
       } else {
         document.body.removeAttribute('data-theme');
         btn.innerText = '🌊 Switch to Conrad Sky';
-        label.innerText = 'Spider-Verse Neon Glow';
+        label.innerText = 'Spider-Verse Pastel Glow';
         currentTheme = 'spider';
       }
     }
@@ -423,7 +428,7 @@
     function extinguishCandle() {
       document.getElementById('candle').innerText = '💨';
       document.getElementById('candleStatus').innerText = 'Wish Made! Confetti Fired! 🎉';
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      confetti({ particleCount: 130, spread: 85, origin: { y: 0.6 } });
     }
 
     const canvas = document.getElementById('sunflowerCanvas');
@@ -439,22 +444,22 @@
       ctx.beginPath();
       ctx.moveTo(centerX, centerY);
       ctx.lineTo(centerX, canvas.height);
-      ctx.strokeStyle = '#16a34a'; ctx.lineWidth = 6; ctx.stroke();
+      ctx.strokeStyle = '#81c784'; ctx.lineWidth = 6; ctx.stroke();
 
       ctx.save();
       ctx.translate(centerX, centerY);
       ctx.rotate(angle - Math.PI / 2);
 
-      ctx.fillStyle = '#f59e0b';
+      ctx.fillStyle = '#ffb7b2';
       for (let i = 0; i < 12; i++) {
         ctx.beginPath();
         ctx.rotate((Math.PI * 2) / 12);
-        ctx.ellipse(0, 32, 8, 22, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 32, 9, 22, 0, 0, Math.PI * 2);
         ctx.fill();
       }
 
       ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2);
-      ctx.fillStyle = '#78350f'; ctx.fill();
+      ctx.fillStyle = '#ffdac1'; ctx.fill();
       ctx.restore();
     }
     canvas.addEventListener('mousemove', (e) => {
@@ -508,7 +513,7 @@
     }
 
     function triggerDaisies() {
-      confetti({ particleCount: 40, scalar: 1.2, shapes: ['circle'], colors: ['#f59e0b', '#fbbf24', '#ffffff'] });
+      confetti({ particleCount: 45, scalar: 1.2, shapes: ['circle'], colors: ['#ffb7b2', '#ffdac1', '#ffffff'] });
     }
 
     const compliments = ["Aee lala, absolute gem!", "Best laugh in this multiverse.", "10/10 bestie rating. No notes!"];
@@ -526,7 +531,7 @@
     function unsealLetter() {
       document.getElementById('unsealBtn').style.display = 'none';
       document.getElementById('letterContent').style.display = 'block';
-      confetti({ particleCount: 90, spread: 80 });
+      confetti({ particleCount: 100, spread: 85 });
     }
   </script>
 </body>
