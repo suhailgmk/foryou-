@@ -32,9 +32,22 @@
     align-items:center;
     justify-content:center;
     padding:24px 12px;
+    position:relative;
+    overflow-x:hidden;
   }
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+  }
+
+  /* floating decorative background stickers */
+  .bg-stickers{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .bg-stickers span{
+    position:absolute; font-size:22px; opacity:.28;
+    animation:drift 9s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-18px) rotate(8deg);}
   }
 
   .frame{
@@ -48,7 +61,24 @@
     box-shadow:0 30px 60px -20px rgba(224,82,127,.35), 0 10px 30px -10px rgba(43,45,66,.15);
     overflow:hidden;
     position:relative;
+    z-index:1;
   }
+
+  /* ---------- ENVELOPE INTRO ---------- */
+  .envelope-overlay{
+    position:absolute; inset:0; z-index:60;
+    background:linear-gradient(160deg,#F6DFE8,#EADAF7 55%, #FDEBD3);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer; text-align:center; padding:20px;
+    transition:opacity .5s ease, visibility .5s;
+  }
+  .envelope-overlay.hidden{opacity:0; visibility:hidden; pointer-events:none;}
+  .envelope-svg{width:150px; height:110px; margin-bottom:18px;}
+  .env-flap{transform-origin:75px 8px; transition:transform .6s cubic-bezier(.65,0,.35,1);}
+  .envelope-overlay.opening .env-flap{transform:rotateX(180deg);}
+  .envelope-overlay.opening .envelope-svg{transform:scale(1.06);}
+  .env-title{font-family:'Caveat',cursive; font-size:26px; color:var(--rose); margin:0 0 4px;}
+  .env-sub{font-family:'Fredoka',sans-serif; font-size:12px; color:#8a7e70; letter-spacing:.05em;}
 
   /* ---------- HEADER / STEPPER ---------- */
   .topbar{
@@ -89,7 +119,7 @@
   .dots span.done{background:var(--gold);}
 
   /* ---------- STAGE WRAPPER ---------- */
-  .stage-body{padding:26px 22px 24px; min-height:480px; display:flex; flex-direction:column;}
+  .stage-body{padding:26px 22px 24px; min-height:500px; display:flex; flex-direction:column;}
   .stage{display:none; flex-direction:column; flex:1; animation:riseIn .5s ease both;}
   .stage.active{display:flex;}
   @keyframes riseIn{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
@@ -188,13 +218,13 @@
   .scratch-secret{
     position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
     padding:22px; text-align:center;
-    font-family:'Caveat',cursive; font-size:23px; color:var(--rose); line-height:1.35;
+    font-family:'Caveat',cursive; font-size:21px; color:var(--rose); line-height:1.35;
   }
   #scratchCanvas{position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:grab;}
   .scratch-progress{font-size:12px; color:#9b8ea3; text-align:center; margin-top:10px;}
 
   /* ================= STAGE 4: JUKEBOX ================= */
-  .vinyl-row{display:flex; align-items:center; gap:16px; margin-bottom:16px;}
+  .vinyl-row{display:flex; align-items:center; gap:16px; margin-bottom:14px;}
   .vinyl{
     width:96px; height:96px; border-radius:50%;
     background:
@@ -211,7 +241,7 @@
     position:absolute; inset:44% ; background:var(--pink); border-radius:50%;
   }
   .now-playing{font-family:'Fredoka',sans-serif; font-size:13px; color:#6b6473;}
-  .now-playing strong{display:block; font-size:16px; color:var(--rose); font-family:'Caveat',cursive; font-size:22px;}
+  .now-playing strong{display:block; color:var(--rose); font-family:'Caveat',cursive; font-size:22px;}
   .track-list{display:flex; flex-direction:column; gap:8px;}
   .track{
     display:flex; align-items:center; justify-content:space-between;
@@ -226,10 +256,17 @@
   .eq span:nth-child(2){animation-delay:.15s;}
   .eq span:nth-child(3){animation-delay:.3s;}
   @keyframes eqBounce{0%,100%{height:3px;}50%{height:13px;}}
+  .liner-note{
+    margin-top:12px; background:#fff; border:1.5px dashed var(--kraft); border-radius:14px;
+    padding:12px 14px; font-family:'Caveat',cursive; font-size:17px; color:#6b6473;
+    line-height:1.35; display:none;
+  }
+  .liner-note.show{display:block; animation:riseIn .35s ease both;}
+  .liner-note b{color:var(--rose); font-family:'Fredoka',sans-serif; font-size:11.5px; display:block; margin-bottom:3px; letter-spacing:.04em;}
 
   /* ================= STAGE 5: TRIVIA ================= */
   .quiz-progress{font-size:11.5px; color:#a99cae; font-family:'Fredoka',sans-serif; margin-bottom:6px;}
-  .quiz-q{font-family:'Caveat',cursive; font-size:24px; color:var(--charcoal); margin:0 0 16px; line-height:1.25;}
+  .quiz-q{font-family:'Caveat',cursive; font-size:23px; color:var(--charcoal); margin:0 0 16px; line-height:1.25;}
   .opt{
     display:block; width:100%; text-align:left;
     padding:13px 16px; margin-bottom:10px; border-radius:14px;
@@ -240,10 +277,14 @@
   .opt.correct{border-color:#4CBB77; background:#EAFBF1; color:#237a4a; font-weight:600;}
   .opt.wrong{border-color:#E0527F; background:#FDEEF2; color:#a3335a;}
   .opt.disabled{pointer-events:none;}
+  .quiz-result{text-align:center; padding:20px 6px;}
+  .quiz-result .big{font-family:'Caveat',cursive; font-size:30px; color:var(--rose); margin-bottom:6px;}
+  .quiz-result .small{font-size:13px; color:#6b6473;}
 
   /* ================= STAGE 6: BUBBLE WRAP ================= */
-  .bubble-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px;}
+  .bubble-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; position:relative;}
   .bubble{
+    position:relative;
     aspect-ratio:1; border-radius:50%;
     background:radial-gradient(circle at 32% 28%, #fff, var(--pink) 55%, var(--rose) 100%);
     box-shadow:0 5px 10px -3px rgba(224,82,127,.5), inset 0 -3px 5px rgba(255,255,255,.5);
@@ -257,6 +298,18 @@
     cursor:default;
   }
   .pop-counter{text-align:center; font-family:'Fredoka',sans-serif; font-size:13px; color:#6b6473; margin-bottom:6px;}
+  .pop-msg{
+    position:absolute; left:50%; top:-6px; transform:translateX(-50%);
+    font-family:'Caveat',cursive; font-size:12.5px; color:var(--rose); background:#fff;
+    border-radius:10px; padding:2px 8px; box-shadow:0 4px 8px rgba(0,0,0,.15);
+    pointer-events:none; white-space:nowrap; z-index:5;
+    animation:popMsgFloat 1.3s ease forwards;
+  }
+  @keyframes popMsgFloat{
+    0%{opacity:0; transform:translate(-50%,4px);}
+    18%{opacity:1; transform:translate(-50%,-4px);}
+    100%{opacity:0; transform:translate(-50%,-26px);}
+  }
 
   /* ================= STAGE 7: SCRAPBOOK ================= */
   .scrap{position:relative; text-align:center; padding-top:6px;}
@@ -291,10 +344,20 @@
   }
   .heart-vinyl svg{width:100%; height:100%; transition:transform .5s cubic-bezier(.65,0,.35,1);}
   .heart-vinyl.spin svg{transform:rotate(360deg);}
+
+  /* timeline */
+  .timeline{display:flex; gap:4px; overflow-x:auto; padding:10px 2px 4px; margin-top:6px; -webkit-overflow-scrolling:touch;}
+  .tl-dot{flex:0 0 auto; width:58px; text-align:center; cursor:pointer; padding:2px 0;}
+  .tl-dot .dot{width:13px; height:13px; border-radius:50%; background:var(--violet); margin:0 auto 5px; transition:.2s; box-shadow:0 0 0 4px rgba(184,153,212,.15);}
+  .tl-dot.active .dot{background:var(--rose); box-shadow:0 0 0 4px rgba(224,82,127,.18);}
+  .tl-dot .tl-label{font-size:9.5px; font-family:'Fredoka',sans-serif; color:#9b8ea3; line-height:1.2;}
+  .tl-dot.active .tl-label{color:var(--rose); font-weight:600;}
+  .tl-caption{min-height:44px; text-align:center; font-family:'Caveat',cursive; font-size:16px; color:#6b6473; margin-top:4px; padding:0 10px;}
+
   .journal{
     text-align:left; font-family:'Plus Jakarta Sans'; font-size:13.5px; line-height:1.6;
     background:var(--paper); border:1.5px solid #f1e5ea; border-radius:16px;
-    padding:16px 16px 14px; margin-top:8px; color:#4a4350;
+    padding:16px 16px 14px; margin-top:8px; color:#4a4350; position:relative;
   }
   .journal .doodle-line{
     font-family:'Caveat',cursive; font-size:17px; color:var(--rose); margin-top:8px; display:block;
@@ -302,6 +365,18 @@
   .moon-note{
     font-family:'Caveat',cursive; font-size:14.5px; color:#9b8ea3; margin-top:10px; opacity:.85;
   }
+  .bonus-sticker{
+    position:absolute; top:-10px; right:-6px; width:32px; height:32px;
+    cursor:pointer; filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));
+    animation:pulseDot 1.6s infinite;
+  }
+  .bonus-note{
+    display:none; margin-top:10px; background:linear-gradient(120deg,#F5E9FF,#FDEBF3);
+    border-radius:12px; padding:10px 12px; font-family:'Caveat',cursive; font-size:15px; color:var(--rose);
+    text-align:left;
+  }
+  .bonus-note.show{display:block; animation:riseIn .35s ease both;}
+
   .badge{
     margin-top:18px; padding:16px; border-radius:18px;
     background:linear-gradient(120deg, var(--sunflower), var(--gold));
@@ -323,7 +398,25 @@
 </head>
 <body>
 
+<div class="bg-stickers" aria-hidden="true">
+  <span style="top:8%; left:6%; animation-duration:8s;">🌻</span>
+  <span style="top:70%; left:4%; animation-duration:10s; animation-delay:.6s;">🕸️</span>
+  <span style="top:20%; right:6%; animation-duration:9s; animation-delay:1.2s;">💜</span>
+  <span style="top:78%; right:8%; animation-duration:11s; animation-delay:.3s;">🦋</span>
+</div>
+
 <div class="frame" id="appFrame">
+
+  <div class="envelope-overlay" id="envelope">
+    <svg class="envelope-svg" viewBox="0 0 150 110">
+      <rect x="4" y="10" width="142" height="96" rx="8" fill="#FFF1F6" stroke="#E0527F" stroke-width="2"/>
+      <path d="M4 18 L75 68 L146 18" fill="none" stroke="#E0527F" stroke-width="2"/>
+      <polygon class="env-flap" points="4,10 146,10 75,58" fill="#FFD1E1" stroke="#E0527F" stroke-width="2"/>
+      <circle cx="75" cy="52" r="9" fill="#FFD166" stroke="#E0527F" stroke-width="1.5"/>
+    </svg>
+    <div class="env-title">a little something, pretty_ma 🕊️</div>
+    <div class="env-sub">TAP TO OPEN</div>
+  </div>
 
   <div class="topbar">
     <div class="label"><span id="stageLabel">STAGE 1 / 7</span><span>🕸️ for pretty_ma</span></div>
@@ -341,7 +434,6 @@
       <div class="cake-wrap">
         <svg viewBox="0 0 220 220" width="100%">
           <ellipse cx="110" cy="196" rx="80" ry="10" fill="#E0527F" opacity="0.15"/>
-          <!-- little spidey mascot -->
           <g id="mascot">
             <circle cx="110" cy="70" r="26" fill="#B899D4"/>
             <path d="M84 60 Q110 40 136 60" stroke="#2B2D42" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -349,7 +441,6 @@
             <circle cx="100" cy="68" r="3" fill="#2B2D42"/><circle cx="120" cy="68" r="3" fill="#2B2D42"/>
             <path d="M92 42 L98 54 M128 42 L122 54" stroke="#E0527F" stroke-width="4" stroke-linecap="round"/>
           </g>
-          <!-- cake -->
           <rect x="55" y="150" width="110" height="40" rx="8" fill="#FFD9E6"/>
           <rect x="55" y="150" width="110" height="12" rx="6" fill="#FF8FB3"/>
           <rect x="62" y="120" width="96" height="34" rx="8" fill="#FFF1D6"/>
@@ -419,6 +510,7 @@
       </div>
 
       <div class="track-list" id="trackList"></div>
+      <div class="liner-note" id="linerNote"></div>
 
       <div class="btn-row">
         <button class="btn" id="s4-next" disabled>next → trivia</button>
@@ -428,9 +520,11 @@
     <!-- STAGE 5 -->
     <section class="stage" data-stage="5">
       <h1 class="stage-title">bestie trivia 🧠</h1>
-      <div class="quiz-progress" id="quizProgress">question 1 / 3</div>
-      <p class="quiz-q" id="quizQ"></p>
-      <div id="quizOpts"></div>
+      <div class="quiz-progress" id="quizProgress">question 1 / 5</div>
+      <div id="quizArea">
+        <p class="quiz-q" id="quizQ"></p>
+        <div id="quizOpts"></div>
+      </div>
 
       <div class="btn-row">
         <button class="btn" id="s5-next" disabled>next → bubble wrap</button>
@@ -440,7 +534,7 @@
     <!-- STAGE 6 -->
     <section class="stage" data-stage="6">
       <h1 class="stage-title">stress pop 🫧</h1>
-      <p class="stage-sub">pop every bubble. very serious, very important task.</p>
+      <p class="stage-sub">pop every bubble. each one's hiding a tiny reason.</p>
 
       <div class="pop-counter" id="popCounter">0 / 12 popped</div>
       <div class="bubble-grid" id="bubbleGrid"></div>
@@ -476,10 +570,19 @@
         </div>
         <p class="hint">tap the heart to spin it</p>
 
+        <p class="hint" style="margin-top:14px;">tap through the timeline ↓</p>
+        <div class="timeline" id="timeline"></div>
+        <div class="tl-caption" id="tlCaption">tap a dot to remember</div>
+
         <div class="journal">
+          <svg class="bonus-sticker" id="bonusSticker" viewBox="0 0 40 40" title="psst">
+            <circle cx="20" cy="20" r="18" fill="#FFD166" stroke="#E0527F" stroke-width="1.5"/>
+            <text x="20" y="26" font-size="18" text-anchor="middle">🕸️</text>
+          </svg>
           you're the "yellow paper daisy" to my daydream — sunflower theory forever, purple always, and yes i will keep being a quick replier, a good listener, and around for absolutely everything. that's not changing.
-          <span class="doodle-line">also you're still gem & precious. no notes.</span>
+          <span class="doodle-line">also you're still gem &amp; precious. no notes.</span>
           <div class="moon-note">the moon is beautiful tonight too 🌙</div>
+          <div class="bonus-note" id="bonusNote">psst — you found the secret sticker. that's +1 bonus reason you're my favorite person to annoy. now go eat cake. 🕸️💛</div>
         </div>
 
         <div class="badge">
@@ -505,11 +608,14 @@
   const stageLabel = document.getElementById('stageLabel');
   const progFill = document.getElementById('progFill');
   const dotsWrap = document.getElementById('dots');
+  const onActivate = {};
 
   for(let i=0;i<TOTAL_STAGES;i++){
     const d = document.createElement('span');
     dotsWrap.appendChild(d);
   }
+
+  function registerActivate(n, fn){ onActivate[n] = fn; }
 
   function renderNav(){
     stageLabel.textContent = `STAGE ${current} / ${TOTAL_STAGES}`;
@@ -521,24 +627,39 @@
     current = n;
     stages.forEach(s=> s.classList.toggle('active', Number(s.dataset.stage) === n));
     renderNav();
+    if(onActivate[n]) onActivate[n]();
     if(n === TOTAL_STAGES) launchConfetti();
   }
 
   document.getElementById('s1-next').addEventListener('click', ()=> goStage(2));
-  document.getElementById('s2-next').addEventListener('click', ()=> goStage(3));
+  document.getElementById('s2-next').addEventListener('click', ()=>{
+    if(typeof stopCamera === 'function') stopCamera();
+    goStage(3);
+  });
   document.getElementById('s3-next').addEventListener('click', ()=> goStage(4));
   document.getElementById('s4-next').addEventListener('click', ()=> goStage(5));
   document.getElementById('s5-next').addEventListener('click', ()=> goStage(6));
   document.getElementById('s6-next').addEventListener('click', ()=> goStage(7));
 
   renderNav();
-  initStage1();
-  initStage2();
+
+  const stage1 = initStage1();
+  let stopCamera = initStage2();
   initStage3();
   initStage4();
   initStage5();
   initStage6();
   initStage7();
+
+  /* ---------------- ENVELOPE INTRO ---------------- */
+  const envelope = document.getElementById('envelope');
+  envelope.addEventListener('click', ()=>{
+    envelope.classList.add('opening');
+    setTimeout(()=>{
+      envelope.classList.add('hidden');
+      stage1.start();
+    }, 550);
+  }, {once:true});
 
   /* ================= STAGE 1: CANDLE ================= */
   function initStage1(){
@@ -548,7 +669,7 @@
     const micLabel = document.getElementById('micLabel');
     const nextBtn = document.getElementById('s1-next');
     let extinguished = false;
-    let audioCtx, analyser, micStream, rafId;
+    let audioCtx, analyser, micStream, rafId, started = false;
 
     function extinguish(){
       if(extinguished) return;
@@ -564,8 +685,15 @@
     flame.addEventListener('click', extinguish);
 
     async function tryMic(){
+      if(started) return;
+      started = true;
       try{
         micStream = await navigator.mediaDevices.getUserMedia({audio:true});
+        if(extinguished){
+          // user already blew it out / tapped while permission dialog was open
+          micStream.getTracks().forEach(t=>t.stop());
+          return;
+        }
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const source = audioCtx.createMediaStreamSource(micStream);
         analyser = audioCtx.createAnalyser();
@@ -589,7 +717,8 @@
         status.textContent = "just tap the flame ✨";
       }
     }
-    tryMic();
+
+    return { start: tryMic };
   }
 
   /* ================= STAGE 2: PHOTO BOOTH ================= */
@@ -604,8 +733,11 @@
     const camNote = document.getElementById('camNote');
     let stream = null;
     let captured = false;
+    let requested = false;
 
     async function startCam(){
+      if(requested) return;
+      requested = true;
       try{
         stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});
         video.srcObject = stream;
@@ -614,11 +746,10 @@
         video.style.display = 'none';
       }
     }
-    startCam();
+    registerActivate(2, startCam);
 
     snapBtn.addEventListener('click', ()=>{
       if(captured){
-        // retake
         canvas.style.display = 'none';
         video.style.display = stream ? 'block' : 'none';
         captured = false;
@@ -632,14 +763,12 @@
 
       if(stream){
         ctx.filter = 'sepia(0.28) saturate(1.35) contrast(1.06) brightness(1.05)';
-        // cover-fit draw
         const vw = video.videoWidth || w, vh = video.videoHeight || h;
         const scale = Math.max(w/vw, h/vh);
         const dw = vw*scale, dh = vh*scale;
         ctx.drawImage(video, (w-dw)/2, (h-dh)/2, dw, dh);
         ctx.filter = 'none';
       } else {
-        // fallback doodle background
         const grad = ctx.createLinearGradient(0,0,w,h);
         grad.addColorStop(0,'#FFD9E6'); grad.addColorStop(1,'#E9D6F5');
         ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
@@ -648,12 +777,10 @@
         ctx.fillText('🕷️🌻', w/2, h/2);
       }
 
-      // warm vignette overlay
       const vg = ctx.createRadialGradient(w/2,h/2,h/3, w/2,h/2,h/1.1);
       vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(60,20,40,.28)');
       ctx.fillStyle = vg; ctx.fillRect(0,0,w,h);
 
-      // handwritten caption
       ctx.font = "40px 'Caveat', cursive";
       ctx.fillStyle = '#fff';
       ctx.textAlign = 'center';
@@ -676,6 +803,10 @@
       snapBtn.textContent = '📷 snap photo';
       retakeBtn.style.display = 'none';
     });
+
+    return function stop(){
+      if(stream) stream.getTracks().forEach(t=>t.stop());
+    };
   }
 
   /* ================= STAGE 3: SCRATCH CARD ================= */
@@ -689,12 +820,15 @@
     let sized = false;
 
     function sizeCanvas(){
+      if(sized) return;
       const rect = canvas.parentElement.getBoundingClientRect();
+      if(rect.width === 0) return;
       canvas.width = rect.width;
       canvas.height = rect.height;
       paintFoil();
       sized = true;
     }
+    registerActivate(3, sizeCanvas);
 
     function paintFoil(){
       const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
@@ -719,9 +853,8 @@
     function checkProgress(){
       if(revealed) return;
       const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-      let cleared = 0;
-      const step = 40; // sample for perf
-      let sampled = 0;
+      let cleared = 0, sampled = 0;
+      const step = 40;
       for(let i=3; i<data.length; i+= 4*step){
         sampled++;
         if(data[i] < 40) cleared++;
@@ -749,31 +882,26 @@
     canvas.addEventListener('touchstart', e=>{drawing=true; const p=getPos(e); scratchAt(p.x,p.y); e.preventDefault();}, {passive:false});
     canvas.addEventListener('touchmove', e=>{ if(drawing){ const p=getPos(e); scratchAt(p.x,p.y);} e.preventDefault();}, {passive:false});
     canvas.addEventListener('touchend', ()=> drawing=false);
-
-    // size once visible/layout ready
-    window.addEventListener('resize', sizeCanvas);
-    setTimeout(sizeCanvas, 50);
-    // re-size when this stage becomes active (in case it was hidden at 0 width)
-    const observer = new MutationObserver(()=>{
-      const sec = canvas.closest('.stage');
-      if(sec.classList.contains('active') && !sized){ sizeCanvas(); }
-    });
-    observer.observe(canvas.closest('.stage'), {attributes:true, attributeFilter:['class']});
   }
 
   /* ================= STAGE 4: JUKEBOX ================= */
   function initStage4(){
     const tracks = [
-      {name:'Baaton Ko Teri', tag:'our late-night one', notes:[392,440,494,523]},
-      {name:'Yellow Paper Daisy', tag:'literally "us"', notes:[523,587,659,587]},
-      {name:'Stuck In A Daydream', tag:'chai + toast szn', notes:[440,494,440,392]},
-      {name:'Sunflower Theory', tag:'yellow & purple anthem', notes:[349,392,440,392]},
+      {name:'Baaton Ko Teri', tag:'our late-night one', notes:[392,440,494,523],
+        liner:'the one that plays when neither of us wants to end the call.'},
+      {name:'Yellow Paper Daisy', tag:'literally "us"', notes:[523,587,659,587],
+        liner:'got renamed "our song" ages ago — no one is allowed to disagree.'},
+      {name:'Stuck In A Daydream', tag:'chai + toast szn', notes:[440,494,440,392],
+        liner:'chai, toast, zero plans, full daydream. exactly the vibe.'},
+      {name:'Sunflower Theory', tag:'yellow & purple anthem', notes:[349,392,440,392],
+        liner:'yellow and purple, forever and completely non-negotiable.'},
     ];
     const listEl = document.getElementById('trackList');
     const vinyl = document.getElementById('vinyl');
     const npLabel = document.getElementById('npLabel');
     const npTitle = document.getElementById('npTitle');
     const nextBtn = document.getElementById('s4-next');
+    const linerEl = document.getElementById('linerNote');
     let audioCtx = null;
 
     tracks.forEach((t, idx)=>{
@@ -803,6 +931,11 @@
       npLabel.textContent = 'now playing';
       npTitle.textContent = t.name;
       nextBtn.disabled = false;
+
+      linerEl.innerHTML = `<b>LINER NOTES</b>${t.liner}`;
+      linerEl.classList.remove('show');
+      void linerEl.offsetWidth;
+      linerEl.classList.add('show');
 
       try{
         if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -840,11 +973,23 @@
         q: 'what does pretty_ma usually call you?',
         opts: ["Sir","A stranger","Pagal / stupid human","Random guy"],
         correct: 2
+      },
+      {
+        q: "how do we mostly hang out these days?",
+        opts: ["Meet up daily","Reels + insta chats","Only phone calls","We don't, really"],
+        correct: 1
+      },
+      {
+        q: "what's playing during peak chai-and-toast season?",
+        opts: ["Total silence","Stuck In A Daydream","The news","Nothing, ever"],
+        correct: 1
       }
     ];
     let qi = 0;
+    let score = 0;
     const qEl = document.getElementById('quizQ');
     const optsEl = document.getElementById('quizOpts');
+    const areaEl = document.getElementById('quizArea');
     const progEl = document.getElementById('quizProgress');
     const nextBtn = document.getElementById('s5-next');
 
@@ -867,6 +1012,7 @@
       [...optsEl.children].forEach(b=> b.classList.add('disabled'));
       if(idx === q.correct){
         btnEl.classList.add('correct');
+        score++;
       } else {
         btnEl.classList.add('wrong');
         optsEl.children[q.correct].classList.add('correct');
@@ -876,10 +1022,19 @@
           qi++;
           render();
         } else {
-          nextBtn.disabled = false;
-          progEl.textContent = 'all done 🎓';
+          showResult();
         }
       }, 850);
+    }
+
+    function showResult(){
+      progEl.textContent = 'trivia complete';
+      areaEl.innerHTML = `
+        <div class="quiz-result">
+          <div class="big">${score} / ${questions.length}</div>
+          <div class="small">score doesn't matter — unforgettable either way ✨</div>
+        </div>`;
+      nextBtn.disabled = false;
     }
 
     render();
@@ -893,6 +1048,21 @@
     const TOTAL = 12;
     let popped = 0;
 
+    const messages = [
+      "always your quick replier",
+      "good listener, promise",
+      "available for you, always",
+      "kind to you, on purpose",
+      "yellow person, for life",
+      "purple person, obviously",
+      "sunflower theory certified",
+      "netflix account, shared forever",
+      "reels sender extraordinaire",
+      "insta chat champion",
+      "bestest friend, allegedly",
+      "spiderpaglu, reporting for duty"
+    ];
+
     for(let i=0;i<TOTAL;i++){
       const b = document.createElement('div');
       b.className = 'bubble';
@@ -901,6 +1071,13 @@
         b.classList.add('popped');
         popped++;
         counter.textContent = `${popped} / ${TOTAL} popped`;
+
+        const msg = document.createElement('div');
+        msg.className = 'pop-msg';
+        msg.textContent = messages[i % messages.length];
+        b.appendChild(msg);
+        setTimeout(()=> msg.remove(), 1300);
+
         if(popped === TOTAL){
           nextBtn.disabled = false;
         }
@@ -932,6 +1109,34 @@
 
     const heart = document.getElementById('heartVinyl');
     heart.addEventListener('click', ()=> heart.classList.toggle('spin'));
+
+    // timeline
+    const milestones = [
+      {label:'the start', caption:'first insta dm, casual chat that never really stopped.'},
+      {label:'reels era', caption:'you send, i laugh, repeat. forever.'},
+      {label:'spiderverse', caption:'we settled it: andrew garfield. no debate.'},
+      {label:'netflix', caption:'shared account, shared taste, zero notes.'},
+      {label:'summer reads', caption:'"the summer i turned pretty" — reading buddies too.'},
+      {label:'today', caption:'aug 18 — happy birthday, pretty_ma 🎂'},
+    ];
+    const tlWrap = document.getElementById('timeline');
+    const tlCaption = document.getElementById('tlCaption');
+    milestones.forEach((m, i)=>{
+      const d = document.createElement('div');
+      d.className = 'tl-dot';
+      d.innerHTML = `<div class="dot"></div><div class="tl-label">${m.label}</div>`;
+      d.addEventListener('click', ()=>{
+        [...tlWrap.children].forEach(c=> c.classList.remove('active'));
+        d.classList.add('active');
+        tlCaption.textContent = m.caption;
+      });
+      tlWrap.appendChild(d);
+    });
+
+    // bonus easter egg
+    const sticker = document.getElementById('bonusSticker');
+    const bonusNote = document.getElementById('bonusNote');
+    sticker.addEventListener('click', ()=> bonusNote.classList.toggle('show'));
   }
 
   /* ================= CONFETTI (stage 7 arrival) ================= */
