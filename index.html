@@ -3,457 +3,633 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A Whimsical Birthday Wish 🌸✨</title>
+  <title>Multiverse Haven 🌼✨</title>
+  
+  <!-- AnimeJS & Canvas Confetti (Used purely for flower bloom bursts) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
   <style>
+    /* Global Reset & Cute Aesthetic Setup */
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.2); }
+    ::-webkit-scrollbar-thumb { background: #ff8fa3; border-radius: 10px; }
+
     :root {
-      --bg-color: #FFF9F6;
-      --card-bg: #FFFFFF;
-      --accent-pink: #FF8FA3;
-      --soft-pink: #FFF0F3;
-      --warm-glow: #FFE5EC;
-      --text-main: #5C4B51;
-      --text-soft: #8C7A80;
-      --gold: #FFB703;
+      --bg-gradient: radial-gradient(circle at 50% 10%, #ffd1dc 0%, #ffe4e1 40%, #fff0f5 75%, #fff9e6 100%);
+      --glass-bg: rgba(255, 255, 255, 0.72);
+      --glass-border: #ffffff;
+      --card-shadow: 0 20px 40px rgba(255, 143, 163, 0.18), inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+      --accent-pink: #ff597b;
+      --accent-purple: #a259ff;
+      --accent-yellow: #ffb703;
+      --text-main: #4a3e3d;
+      --text-soft: #7a6b69;
+      --btn-grad: linear-gradient(135deg, #ff597b 0%, #ff8fa3 50%, #ffb703 100%);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-      user-select: none;
+    [data-theme="conrad"] {
+      --bg-gradient: radial-gradient(circle at 50% 10%, #b5ead7 0%, #c7ceea 40%, #e2f0cb 75%, #e8f5e9 100%);
+      --glass-bg: rgba(255, 255, 255, 0.78);
+      --card-shadow: 0 20px 40px rgba(114, 182, 196, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.9);
+      --accent-pink: #2a9d8f;
+      --accent-purple: #3a86ff;
+      --accent-yellow: #e9c46a;
+      --text-main: #1d3557;
+      --text-soft: #456268;
+      --btn-grad: linear-gradient(135deg, #3a86ff 0%, #2a9d8f 100%);
     }
 
     body {
-      background-color: var(--bg-color);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'Nunito', sans-serif;
       min-height: 100vh;
-      overflow: hidden;
-      transition: background-color 1s ease;
+      padding-bottom: 100px;
+      overflow-x: hidden;
+      position: relative;
+      transition: background 0.8s ease;
     }
 
-    /* Ambient Warm Glow on Blow Out */
-    body.all-blown {
-      background-color: #FFF2F5;
+    /* Floating Gentle Background Particles (No Confetti) */
+    #bgCanvas {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .container {
-      width: 100%;
-      max-width: 440px;
-      padding: 28px 24px;
-      background: var(--card-bg);
-      border-radius: 32px;
-      box-shadow: 0 20px 40px rgba(255, 143, 163, 0.12);
-      text-align: center;
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 28px 18px;
       position: relative;
+      z-index: 10;
     }
 
-    h1 {
-      font-size: 1.6rem;
+    /* Header Nav */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding: 16px 28px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 3px solid var(--glass-border);
+      border-radius: 50px;
+      box-shadow: var(--card-shadow);
+      animation: gentleFloat 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes gentleFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+
+    .brand {
+      font-family: 'Fredoka', sans-serif;
       font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--accent-pink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill-btn {
+      background: var(--btn-grad);
+      border: none;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 0.92rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 89, 123, 0.28);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .pill-btn:hover { transform: scale(1.06) translateY(-2px); }
+    .pill-btn:active { transform: scale(0.96); }
+
+    /* Module Cards Structure */
+    .module-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 3px solid var(--glass-border);
+      border-radius: 36px;
+      padding: 30px;
+      margin-bottom: 28px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.55rem;
       color: var(--accent-pink);
       margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-
-    p.subtitle {
-      font-size: 0.9rem;
+    .subtitle {
+      font-size: 0.95rem;
       color: var(--text-soft);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
+      font-weight: 700;
+      line-height: 1.5;
     }
 
-    /* Scene Container */
+    /* ----------------------------------
+       MODULE 1: FLOWER CANDLE & WISH JAR
+    ----------------------------------- */
     .scene {
       position: relative;
-      height: 220px;
+      height: 210px;
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     /* Wish Jar */
     .wish-jar-container {
       position: absolute;
-      top: 0;
-      right: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      top: 0; right: 10px;
+      display: flex; flex-direction: column; align-items: center;
     }
-
     .wish-jar {
-      width: 44px;
-      height: 56px;
+      width: 48px; height: 60px;
       border: 3px solid #E2D4D8;
       border-radius: 8px 8px 16px 16px;
       position: relative;
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.7);
       overflow: hidden;
-      display: flex;
-      flex-wrap: wrap-reverse;
-      align-content: flex-start;
-      padding: 4px;
-      gap: 3px;
+      display: flex; flex-wrap: wrap-reverse; align-content: flex-start;
+      padding: 4px; gap: 3px;
     }
-
     .wish-jar::before {
-      content: '';
-      position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 32px;
-      height: 6px;
-      background: #D8C3C8;
-      border-radius: 4px;
+      content: ''; position: absolute; top: -6px; left: 50%;
+      transform: translateX(-50%); width: 34px; height: 6px;
+      background: #D8C3C8; border-radius: 4px;
     }
-
     .jar-star {
-      width: 10px;
-      height: 10px;
-      background: var(--gold);
+      width: 10px; height: 10px; background: var(--accent-yellow);
       clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
       animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+    .jar-label { font-size: 0.72rem; color: var(--text-soft); margin-top: 4px; font-weight: 800; }
 
-    .jar-label {
-      font-size: 0.7rem;
-      color: var(--text-soft);
-      margin-top: 4px;
-      font-weight: 600;
-    }
-
-    /* Cute Mascot Companion */
+    /* Mascot Companion */
     .mascot {
-      position: absolute;
-      left: 12px;
-      bottom: 20px;
-      width: 65px;
-      height: 65px;
+      position: absolute; left: 12px; bottom: 15px;
+      width: 65px; height: 65px;
       transition: transform 0.3s ease;
     }
-
     .mascot-head {
-      width: 50px;
-      height: 44px;
-      background: #F7D6C8;
-      border-radius: 25px 25px 20px 20px;
-      position: relative;
-      margin: 0 auto;
+      width: 52px; height: 46px; background: #F7D6C8;
+      border-radius: 25px 25px 20px 20px; position: relative; margin: 0 auto;
     }
-
     .ear {
-      width: 14px;
-      height: 18px;
-      background: #F7D6C8;
-      position: absolute;
-      top: -8px;
-      border-radius: 10px 10px 0 0;
+      width: 14px; height: 18px; background: #F7D6C8;
+      position: absolute; top: -8px; border-radius: 10px 10px 0 0;
     }
     .ear.left { left: 4px; transform: rotate(-15deg); }
     .ear.right { right: 4px; transform: rotate(15deg); }
-
-    .eye {
-      width: 6px;
-      height: 6px;
-      background: var(--text-main);
-      border-radius: 50%;
-      position: absolute;
-      top: 18px;
-    }
-    .eye.left { left: 12px; }
-    .eye.right { right: 12px; }
-
-    .blush {
-      width: 8px;
-      height: 5px;
-      background: #FFB3C1;
-      border-radius: 50%;
-      position: absolute;
-      top: 24px;
-    }
-    .blush.left { left: 8px; }
-    .blush.right { right: 8px; }
-
+    .eye { width: 6px; height: 6px; background: var(--text-main); border-radius: 50%; position: absolute; top: 18px; }
+    .eye.left { left: 12px; } .eye.right { right: 12px; }
+    .blush { width: 8px; height: 5px; background: #FFB3C1; border-radius: 50%; position: absolute; top: 24px; }
+    .blush.left { left: 8px; } .blush.right { right: 8px; }
     .mouth {
-      width: 8px;
-      height: 4px;
-      border-bottom: 2px solid var(--text-main);
-      border-radius: 0 0 8px 8px;
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    /* Mascot Animations */
-    .mascot.happy {
-      animation: bounce 0.6s infinite alternate ease-in-out;
+      width: 8px; height: 4px; border-bottom: 2px solid var(--text-main);
+      border-radius: 0 0 8px 8px; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
     }
 
     /* Cake Structure */
-    .cake-container {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .candles-row {
-      display: flex;
-      gap: 16px;
-      margin-bottom: -2px;
-      z-index: 2;
-    }
-
+    .cake-container { position: relative; display: flex; flex-direction: column; align-items: center; }
+    .candles-row { display: flex; gap: 18px; margin-bottom: -2px; z-index: 2; }
     .candle {
-      position: relative;
-      width: 12px;
-      height: 38px;
+      position: relative; width: 12px; height: 38px;
       background: repeating-linear-gradient(45deg, #FFF, #FFF 4px, #FFC6FF 4px, #FFC6FF 8px);
-      border-radius: 4px;
-      cursor: pointer;
+      border-radius: 4px; cursor: pointer;
     }
-
-    /* Flower Bud / Flame */
     .flame-container {
-      position: absolute;
-      top: -18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 16px;
-      height: 18px;
-      cursor: pointer;
+      position: absolute; top: -18px; left: 50%;
+      transform: translateX(-50%); width: 16px; height: 18px; cursor: pointer;
     }
-
     .flame {
-      width: 12px;
-      height: 16px;
+      width: 12px; height: 16px;
       background: radial-gradient(circle, #FFE600 20%, #FF5900 100%);
-      border-radius: 50% 50% 35% 35%;
-      margin: 0 auto;
+      border-radius: 50% 50% 35% 35%; margin: 0 auto;
       box-shadow: 0 0 12px #FF9E00;
       animation: flicker 0.8s infinite alternate ease-in-out;
-      transition: all 0.5s ease;
     }
 
     /* Bloom state replacing smoke */
     .candle.off .flame {
-      background: #FF8FA3;
-      box-shadow: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      transform: scale(1.2);
-      animation: bloom 0.4s ease forwards;
+      background: #FF8FA3; box-shadow: none; width: 14px; height: 14px;
+      border-radius: 50%; transform: scale(1.2); animation: bloom 0.4s ease forwards;
     }
+    .candle.off .flame::after { content: '🌸'; font-size: 10px; position: absolute; top: -2px; left: 0; }
 
-    .candle.off .flame::after {
-      content: '🌸';
-      font-size: 10px;
-      position: absolute;
-      top: -2px;
-      left: 0;
-    }
-
-    /* Cake Layers */
     .cake-top {
-      width: 140px;
-      height: 40px;
-      background: #FFE5EC;
-      border-radius: 12px 12px 4px 4px;
-      position: relative;
-      border-bottom: 4px solid #FFC2D1;
+      width: 140px; height: 40px; background: #FFE5EC;
+      border-radius: 12px 12px 4px 4px; position: relative; border-bottom: 4px solid #FFC2D1;
     }
-
     .cake-base {
-      width: 170px;
-      height: 50px;
-      background: #FFF;
-      border: 3px solid #FFE5EC;
-      border-radius: 4px 4px 16px 16px;
-      box-shadow: inset 0 -8px 0 #FFF0F3;
+      width: 170px; height: 48px; background: #FFF;
+      border: 3px solid #FFE5EC; border-radius: 4px 4px 16px 16px; box-shadow: inset 0 -8px 0 #FFF0F3;
     }
 
-    /* Floating Star Particles */
     .star-particle {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: var(--gold);
+      position: absolute; width: 12px; height: 12px; background: var(--accent-yellow);
       clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-      pointer-events: none;
-      z-index: 10;
-      transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+      pointer-events: none; z-index: 10; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    /* Control Panel */
-    .controls {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 10px;
-    }
-
-    .btn {
-      background: var(--soft-pink);
-      color: var(--accent-pink);
-      border: 2px solid var(--warm-glow);
-      padding: 12px 20px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn:hover {
-      background: var(--accent-pink);
-      color: #FFF;
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    /* Wish Card Reveal */
     .wish-card {
-      margin-top: 20px;
-      padding: 18px;
-      background: #FFF9FA;
-      border: 2px dashed #FFB3C1;
-      border-radius: 18px;
-      display: none;
+      margin-top: 18px; padding: 18px; background: rgba(255,255,255,0.85);
+      border: 2px dashed #FFB3C1; border-radius: 20px; display: none; text-align: center;
       animation: fadeIn 0.8s ease forwards;
     }
 
-    .wish-card.show {
-      display: block;
+    /* ----------------------------------
+       MODULE 2: VIRTUAL PET SUNNY
+    ----------------------------------- */
+    .pet-avatar {
+      font-size: 5.5rem; cursor: pointer; display: inline-block;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.08)); transition: transform 0.2s ease;
     }
 
-    .wish-card h2 {
-      font-size: 1.1rem;
-      color: var(--accent-pink);
-      margin-bottom: 6px;
+    /* ----------------------------------
+       MODULE 3: SUNFLOWER CANVAS
+    ----------------------------------- */
+    canvas.sunflower-canvas {
+      display: block; margin: 0 auto; background: rgba(255, 255, 255, 0.5);
+      border-radius: 24px; border: 2px solid var(--glass-border);
     }
 
-    .wish-card p {
-      font-size: 0.88rem;
-      color: var(--text-main);
-      line-height: 1.4;
+    /* ----------------------------------
+       MODULE 4: SCRATCH CARD
+    ----------------------------------- */
+    .scratch-container {
+      position: relative; width: 100%; max-width: 380px; height: 150px;
+      margin: 0 auto; border-radius: 24px; overflow: hidden;
+      border: 3px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     }
+    .scratch-secret {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px; text-align: center; font-weight: 800; color: var(--accent-pink);
+    }
+    #scratchCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer; z-index: 5; }
+
+    /* ----------------------------------
+       MODULE 5: STRESS BUBBLES
+    ----------------------------------- */
+    .bubble-wrapper { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .bubble {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), var(--accent-pink));
+      box-shadow: 0 6px 12px rgba(255, 89, 123, 0.25); display: flex; align-items: center;
+      justify-content: center; font-size: 1.4rem; cursor: pointer; transition: transform 0.2s ease;
+    }
+
+    /* ----------------------------------
+       MODULE 6: BANTER FLIP CARDS
+    ----------------------------------- */
+    .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .flip-card { height: 130px; perspective: 1000px; cursor: pointer; }
+    .flip-inner {
+      position: relative; width: 100%; height: 100%;
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+      border-radius: 24px; display: flex; align-items: center; justify-content: center;
+      padding: 16px; text-align: center; border: 2px solid var(--glass-border); font-weight: 800;
+    }
+    .flip-front { background: rgba(255, 255, 255, 0.7); color: var(--text-main); }
+    .flip-back { background: var(--btn-grad); color: #fff; font-family: 'Fredoka'; transform: rotateY(180deg); }
+
+    /* ----------------------------------
+       MODULE 7: SOUNDBOARD
+    ----------------------------------- */
+    .sound-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; }
+    .sound-btn {
+      background: #ffffff; border: 2px solid var(--glass-border); padding: 16px 10px;
+      border-radius: 22px; font-family: 'Fredoka'; font-size: 0.95rem; color: var(--text-main);
+      cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.04); transition: all 0.25s ease;
+    }
+    .sound-btn:hover { transform: translateY(-5px); background: var(--btn-grad); color: #fff; }
+
+    /* ----------------------------------
+       MODULE 8: 2 AM VENT CONSOLE
+    ----------------------------------- */
+    .chat-box {
+      background: rgba(255, 255, 255, 0.55); border-radius: 24px; padding: 18px;
+      height: 160px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+      border: 2px solid var(--glass-border);
+    }
+    .chat-msg {
+      padding: 10px 16px; border-radius: 20px; font-size: 0.88rem; max-width: 80%;
+      font-weight: 700; line-height: 1.4; animation: popIn 0.3s ease;
+    }
+    .chat-msg.them { background: #ffffff; align-self: flex-start; color: var(--text-main); }
+    .chat-msg.me { background: var(--btn-grad); color: #fff; align-self: flex-end; }
+    input[type="text"] {
+      flex: 1; background: #ffffff; border: 2px solid var(--glass-border); padding: 12px 18px;
+      border-radius: 25px; color: var(--text-main); font-weight: 700; outline: none;
+    }
+
+    /* ----------------------------------
+       MODULE 9: UNSEAL LETTER
+    ----------------------------------- */
+    .envelope {
+      width: 100%; max-width: 360px; height: 180px; background: linear-gradient(135deg, #ffb3c1, #ff85a1);
+      margin: 0 auto; border-radius: 24px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 12px 25px rgba(255, 133, 161, 0.3); transition: transform 0.3s ease;
+    }
+    .envelope:hover { transform: scale(1.03); }
 
     /* Keyframes */
-    @keyframes flicker {
-      0% { transform: scale(1) rotate(-2deg); }
-      100% { transform: scale(1.08) rotate(2deg); opacity: 0.95; }
-    }
-
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-8px); }
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes flicker { 0% { transform: scale(1) rotate(-2deg); } 100% { transform: scale(1.08) rotate(2deg); } }
+    @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .easter-egg {
+      color: var(--accent-pink); font-weight: 800; cursor: pointer; background: rgba(255,255,255,0.6);
+      padding: 2px 8px; border-radius: 10px; border: 1px dashed var(--accent-pink);
     }
   </style>
 </head>
 <body>
 
+  <!-- Gentle Background Particle Canvas -->
+  <canvas id="bgCanvas"></canvas>
+
   <div class="container">
-    <h1>Make a Wish 🌸</h1>
-    <p class="subtitle">Gently blow into your mic or tap the flames to release your wishes into the jar.</p>
 
-    <div class="scene">
-      <!-- Mascot Companion -->
-      <div class="mascot" id="mascot">
-        <div class="mascot-head">
-          <div class="ear left"></div>
-          <div class="ear right"></div>
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="blush left"></div>
-          <div class="blush right"></div>
-          <div class="mouth"></div>
+    <!-- Top Navigation Header -->
+    <div class="top-nav">
+      <div class="brand">
+        <span>🌼</span> Multiverse Vault
+      </div>
+      <button class="pill-btn" onclick="toggleTheme()" id="themeBtn">🌊 Conrad's Sky</button>
+    </div>
+
+    <!-- MODULE 1: Flower Candle & Wish Jar Ritual -->
+    <div class="module-card">
+      <h2 style="justify-content: center;">🌸 Wish Flower Candle Ritual</h2>
+      <p class="subtitle" style="text-align: center;">Tap candles or blow air to send your wishes floating into the Wish Jar!</p>
+      
+      <div class="scene">
+        <div class="mascot" id="mascot">
+          <div class="mascot-head">
+            <div class="ear left"></div><div class="ear right"></div>
+            <div class="eye left"></div><div class="eye right"></div>
+            <div class="blush left"></div><div class="blush right"></div>
+            <div class="mouth"></div>
+          </div>
+        </div>
+
+        <div class="wish-jar-container">
+          <div class="wish-jar" id="wishJar"></div>
+          <span class="jar-label">Wish Jar</span>
+        </div>
+
+        <div class="cake-container">
+          <div class="candles-row">
+            <div class="candle" onclick="extinguishCandle(this)"><div class="flame-container"><div class="flame"></div></div></div>
+            <div class="candle" onclick="extinguishCandle(this)"><div class="flame-container"><div class="flame"></div></div></div>
+            <div class="candle" onclick="extinguishCandle(this)"><div class="flame-container"><div class="flame"></div></div></div>
+          </div>
+          <div class="cake-top"></div>
+          <div class="cake-base"></div>
         </div>
       </div>
 
-      <!-- Wish Jar -->
-      <div class="wish-jar-container">
-        <div class="wish-jar" id="wishJar"></div>
-        <span class="jar-label">Wish Jar</span>
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 10px;">
+        <button class="pill-btn" onclick="simulateBlow()">💨 Blow Air</button>
+        <button class="pill-btn" onclick="resetCandles()">🔄 Reset</button>
       </div>
 
-      <!-- Cake -->
-      <div class="cake-container">
-        <div class="candles-row">
-          <div class="candle" onclick="extinguishCandle(this)">
-            <div class="flame-container"><div class="flame"></div></div>
-          </div>
-          <div class="candle" onclick="extinguishCandle(this)">
-            <div class="flame-container"><div class="flame"></div></div>
-          </div>
-          <div class="candle" onclick="extinguishCandle(this)">
-            <div class="flame-container"><div class="flame"></div></div>
+      <div class="wish-card" id="wishCard">
+        <h2 style="font-size: 1.15rem; color: var(--accent-pink); margin-bottom: 6px;">✨ Your Wish Has Been Sealed! ✨</h2>
+        <p style="font-size: 0.9rem; color: var(--text-main);">May your year be soft, joyful, and filled with endless moments that make your heart smile!</p>
+      </div>
+    </div>
+
+    <!-- MODULE 2: Pet Sunflower Sunny -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🌻 Meet Sunny - Your Pet Sunflower</h2>
+      <p class="subtitle">Interact with Sunny to watch playful expressions:</p>
+      <div class="pet-avatar" id="petAvatar" onclick="petSunny()">🌻</div>
+      <p id="petSpeech" style="font-size: 1.05rem; font-weight: 800; color: var(--accent-pink); margin-top: 12px; min-height: 28px;">
+        "Hi bestie! Tap me to play!"
+      </p>
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 14px;">
+        <button class="pill-btn" onclick="feedSunny('☕')">Feed Chai ☕</button>
+        <button class="pill-btn" onclick="feedSunny('🍪')">Feed Cookie 🍪</button>
+        <button class="pill-btn" onclick="feedSunny('☀️')">Give Sun ☀️</button>
+      </div>
+    </div>
+
+    <!-- MODULE 3: Sunflower Mechanics Canvas -->
+    <div class="module-card">
+      <h2>🌻 Sunflower Mechanics</h2>
+      <p class="subtitle">Drag your touch or move mouse over the box. The sunflower always turns toward you:</p>
+      <canvas class="sunflower-canvas" id="sunflowerCanvas" width="320" height="180"></canvas>
+    </div>
+
+    <!-- MODULE 4: Scratch Card -->
+    <div class="module-card" style="text-align: center;">
+      <h2>✨ Multiversal Scratch Card</h2>
+      <p class="subtitle">Scratch off the silver foil to reveal your surprise:</p>
+      <div class="scratch-container">
+        <div class="scratch-secret">
+          <p style="font-size: 1.1rem; font-family: 'Fredoka';">🎉 100 YEARS OF ENDLESS CHAI & ZERO JUDGMENT TALKS! ☕💖</p>
+        </div>
+        <canvas id="scratchCanvas" width="380" height="150"></canvas>
+      </div>
+    </div>
+
+    <!-- MODULE 5: Jukebox Lyrics -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🌼 Yellow Paper Daisy Jukebox</h2>
+      <p class="subtitle">When Chai Met Toast — Acoustic Vibe Box</p>
+      <div style="background: rgba(255, 255, 255, 0.5); padding: 18px; border-radius: 20px; border: 2px solid var(--glass-border);">
+        <p style="font-weight: 800; margin-bottom: 8px; color: var(--accent-pink);">🎵 Yellow Paper Daisy</p>
+        <p style="font-size: 1rem; font-style: italic; margin-bottom: 14px; font-weight: 700; min-height: 40px; display: flex; align-items: center; justify-content: center;" id="lyricDisplay">
+          "Oh, you complete me like cherry on ice cream..."
+        </p>
+        <button class="pill-btn" onclick="nextLyric()">Next Line 🎶</button>
+      </div>
+    </div>
+
+    <!-- MODULE 6: Banter Flip Board -->
+    <div class="module-card">
+      <h2>🤪 Aee Lala, Let's Settle This!</h2>
+      <p class="subtitle">Tap cards to flip and reveal friendly truths:</p>
+      <div class="flip-grid">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Who is more <span class="easter-egg">pagal</span>? 🤪</div>
+            <div class="flip-back">You, 100%! Chal jhuttee! 💖</div>
           </div>
         </div>
-        <div class="cake-top"></div>
-        <div class="cake-base"></div>
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-inner">
+            <div class="flip-front">Who drama-queens more? 🎭</div>
+            <div class="flip-back"><span class="easter-egg">Arerere</span>, definitely you! ✨</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Controls -->
-    <div class="controls">
-      <button class="btn" id="blowBtn" onclick="simulateBlow()">
-        💨 Blow Air
-      </button>
-      <button class="btn" onclick="resetCandles()">
-        🔄 Reset
-      </button>
+    <!-- MODULE 7: Stress Bubble Wrap -->
+    <div class="module-card" style="text-align: center;">
+      <h2>🫧 Stress-Reliever Bubble Wrap</h2>
+      <p class="subtitle">Pop bubbles for gentle floating star bursts:</p>
+      <div class="bubble-wrapper" id="bubbleWrapper"></div>
     </div>
 
-    <!-- Heartfelt Wish Card -->
-    <div class="wish-card" id="wishCard">
-      <h2>✨ Your Wish Has Been Captured! ✨</h2>
-      <p>May your upcoming year be soft, joyful, and filled with endless moments that make your heart smile. Keep shining brightly!</p>
+    <!-- MODULE 8: Soundboard -->
+    <div class="module-card">
+      <h2>🔊 Interactive Bestie Soundboard</h2>
+      <p class="subtitle">Tactile audio-visual feedback triggers:</p>
+      <div class="sound-grid">
+        <div class="sound-btn" onclick="triggerVisualTag('🕸️ Thwip! Web Shoot!')"><span style="font-size: 1.8rem;">🕸️</span> Web-Shoot</div>
+        <div class="sound-btn" onclick="triggerVisualTag('☕ Sip... Ahh Fresh Chai!')"><span style="font-size: 1.8rem;">☕</span> Chai Sip</div>
+        <div class="sound-btn" onclick="triggerVisualTag('🔔 Birthday Chime!')"><span style="font-size: 1.8rem;">🔔</span> Chime</div>
+        <div class="sound-btn" onclick="triggerVisualTag('🤪 Aee Lala!')"><span style="font-size: 1.8rem;">🤪</span> Aee Lala</div>
+      </div>
     </div>
+
+    <!-- MODULE 9: 2 AM Vent Console -->
+    <div class="module-card">
+      <h2>🎧 2 AM Listener Console</h2>
+      <p class="subtitle">Instant Reply Simulator (0.001s Latency — Always here for you)</p>
+      <div class="chat-box" id="chatBox">
+        <div class="chat-msg them">Hey! You awake? Need to vent about something... 💭</div>
+      </div>
+      <div style="display: flex; gap: 10px; margin-top: 14px;">
+        <input type="text" id="chatInput" placeholder="Type a message to vent..." onkeypress="if(event.key==='Enter') sendVent()">
+        <button class="pill-btn" onclick="sendVent()">Vent ⚡</button>
+      </div>
+    </div>
+
+    <!-- MODULE 10: Escape Planner -->
+    <div class="module-card">
+      <h2>🏔️ Pahaad & Chai Escape Planner</h2>
+      <p class="subtitle">Select your ultimate mountain trip setup:</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; font-weight: 700;">
+        <label><input type="checkbox" checked style="margin-right: 8px;"> Hot Adrak Chai in kulhad ☕</label>
+        <label><input type="checkbox" checked style="margin-right: 8px;"> Silent valley view & cold breeze 🏔️</label>
+        <label><input type="checkbox" checked style="margin-right: 8px;"> When Chai Met Toast playlist 🎧</label>
+      </div>
+      <button class="pill-btn" style="margin-top: 16px;" onclick="triggerVisualTag('🏔️ Itinerary Locked! Mountains Calling!')">Lock Itinerary 🚀</button>
+    </div>
+
+    <!-- MODULE 11: Unsealable Letter -->
+    <div class="module-card" style="text-align: center;">
+      <h2>💌 Unsealable Heartfelt Letter</h2>
+      <p class="subtitle">Tap the wax seal envelope below to open!</p>
+      <div class="envelope" id="envelopeCard" onclick="openLetter()">
+        <div style="color: white; text-align: center;">
+          <div style="font-size: 3.5rem; margin-bottom: 4px;">💌</div>
+          <p style="font-family: 'Fredoka'; font-size: 1.1rem;">TAP TO UNSEAL LETTER</p>
+        </div>
+      </div>
+      <div id="letterContent" style="display: none; text-align: left; margin-top: 20px; line-height: 1.8; font-size: 0.95rem; background: #ffffff; padding: 24px; border-radius: 24px; border: 3px dashed var(--accent-pink); font-weight: 600;">
+        <p>Hey Bestie,</p><br>
+        <p>If you're reading this, I just want you to know how deeply valued you are. Like a sunflower turned toward light, or a rare yellow paper daisy that never fades—you bring so much warmth into my quiet days.</p><br>
+        <p>No matter how chaotic life gets or how cloudy the skies turn, remember you always have a dedicated listener by your side. Zero judgment, fast replies, and endless support.</p><br>
+        <p>Here's to endless chai, mountain escapes, and unforgettable moments ahead. You're an absolute gem!</p><br>
+        <p style="font-weight: 800; color: var(--accent-pink);">Always keeping you by my side. ✨</p>
+      </div>
+    </div>
+
   </div>
 
   <script>
+    /* ===================================================
+       1. FLOATING GENTLE BACKGROUND PARTICLES (NO CONFETTI)
+       =================================================== */
+    const bgCanvas = document.getElementById('bgCanvas');
+    const bCtx = bgCanvas.getContext('2d');
+    let particles = [];
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
+
+    class FloatingParticle {
+      constructor() {
+        this.x = Math.random() * bgCanvas.width;
+        this.y = Math.random() * bgCanvas.height;
+        this.size = Math.random() * 16 + 8;
+        this.speedY = Math.random() * -0.8 - 0.3;
+        this.symbol = ['🌼', '✨', '🌸', '☁️'][Math.floor(Math.random() * 4)];
+      }
+      update() {
+        this.y += this.speedY;
+        if (this.y < -30) {
+          this.y = bgCanvas.height + 30;
+          this.x = Math.random() * bgCanvas.width;
+        }
+      }
+      draw() {
+        bCtx.font = `${this.size}px sans-serif`;
+        bCtx.fillText(this.symbol, this.x, this.y);
+      }
+    }
+    for (let i = 0; i < 20; i++) particles.push(new FloatingParticle());
+    function animateBg() {
+      bCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateBg);
+    }
+    animateBg();
+
+    /* ===================================================
+       2. FLOWER CANDLE & WISH JAR RITUAL MECHANICS
+       =================================================== */
     let jarCount = 0;
     const totalCandles = 3;
 
     function extinguishCandle(candleEl) {
       if (candleEl.classList.contains('off')) return;
-
       candleEl.classList.add('off');
-      
-      // Animate star particle flying to jar
+
       createStarParticle(candleEl);
 
-      // Mascot reaction
       const mascot = document.getElementById('mascot');
-      mascot.classList.add('happy');
-      setTimeout(() => mascot.classList.remove('happy'), 1200);
+      anime({ targets: mascot, translateY: [-10, 0], duration: 400, easing: 'easeOutQuad' });
 
-      // Add star to jar after flight delay
-      setTimeout(() => {
-        addStarToJar();
-      }, 700);
+      setTimeout(() => { addStarToJar(); }, 700);
     }
 
     function createStarParticle(sourceEl) {
@@ -466,16 +642,13 @@
       particle.style.top = `${rect.top - 10}px`;
       document.body.appendChild(particle);
 
-      // Trigger movement to wish jar
       requestAnimationFrame(() => {
         particle.style.left = `${jarRect.left + 14}px`;
         particle.style.top = `${jarRect.top + 16}px`;
         particle.style.opacity = '0.5';
       });
 
-      setTimeout(() => {
-        particle.remove();
-      }, 800);
+      setTimeout(() => { particle.remove(); }, 800);
     }
 
     function addStarToJar() {
@@ -483,37 +656,198 @@
       const star = document.createElement('div');
       star.className = 'jar-star';
       wishJar.appendChild(star);
-      
       jarCount++;
 
       if (jarCount === totalCandles) {
-        document.body.classList.add('all-blown');
-        document.getElementById('mascot').classList.add('happy');
         setTimeout(() => {
-          document.getElementById('wishCard').classList.add('show');
-        }, 400);
+          document.getElementById('wishCard').style.display = 'block';
+        }, 300);
       }
     }
 
     function simulateBlow() {
       const activeCandles = document.querySelectorAll('.candle:not(.off)');
-      if (activeCandles.length > 0) {
-        // Extinguish candles sequentially for a realistic blow effect
-        activeCandles.forEach((candle, index) => {
-          setTimeout(() => {
-            extinguishCandle(candle);
-          }, index * 250);
-        });
-      }
+      activeCandles.forEach((candle, index) => {
+        setTimeout(() => { extinguishCandle(candle); }, index * 250);
+      });
     }
 
     function resetCandles() {
       document.querySelectorAll('.candle').forEach(c => c.classList.remove('off'));
       document.getElementById('wishJar').innerHTML = '';
-      document.getElementById('wishCard').classList.remove('show');
-      document.body.classList.remove('all-blown');
-      document.getElementById('mascot').classList.remove('happy');
+      document.getElementById('wishCard').style.display = 'none';
       jarCount = 0;
+    }
+
+    /* ===================================================
+       3. PET SUNNY INTERACTION
+       =================================================== */
+    const sunnyQuotes = [
+      "I feel so happy turning toward you! 🌻✨",
+      "Yum! Best chai session ever! ☕💖",
+      "Always turned toward you, cloud or shine! ☀️"
+    ];
+    function petSunny() {
+      anime({ targets: '#petAvatar', scale: [1, 1.3, 1], duration: 500 });
+      document.getElementById('petSpeech').innerText = sunnyQuotes[Math.floor(Math.random() * sunnyQuotes.length)];
+    }
+    function feedSunny(item) {
+      anime({ targets: '#petAvatar', translateY: [-20, 0], duration: 400 });
+      document.getElementById('petSpeech').innerText = `Mmm! Thanks for the ${item}! Delicious! ✨`;
+    }
+
+    /* ===================================================
+       4. SUNFLOWER CANVAS DYNAMICS
+       =================================================== */
+    const sfCanvas = document.getElementById('sunflowerCanvas');
+    const sfCtx = sfCanvas.getContext('2d');
+    function drawSunflower(targetX, targetY) {
+      sfCtx.clearRect(0, 0, sfCanvas.width, sfCanvas.height);
+      const centerX = sfCanvas.width / 2;
+      const centerY = sfCanvas.height / 2 + 20;
+      const angle = Math.atan2(targetY - centerY, targetX - centerX);
+
+      sfCtx.beginPath();
+      sfCtx.moveTo(centerX, centerY);
+      sfCtx.lineTo(centerX, sfCanvas.height);
+      sfCtx.strokeStyle = '#81c784'; sfCtx.lineWidth = 6; sfCtx.stroke();
+
+      sfCtx.save();
+      sfCtx.translate(centerX, centerY);
+      sfCtx.rotate(angle - Math.PI / 2);
+
+      sfCtx.fillStyle = '#ffb703';
+      for (let i = 0; i < 12; i++) {
+        sfCtx.beginPath(); sfCtx.rotate((Math.PI * 2) / 12);
+        sfCtx.ellipse(0, 28, 8, 18, 0, 0, Math.PI * 2); sfCtx.fill();
+      }
+      sfCtx.beginPath(); sfCtx.arc(0, 0, 18, 0, Math.PI * 2);
+      sfCtx.fillStyle = '#6d4c41'; sfCtx.fill();
+      sfCtx.restore();
+    }
+    sfCanvas.addEventListener('mousemove', (e) => {
+      const rect = sfCanvas.getBoundingClientRect();
+      drawSunflower(e.clientX - rect.left, e.clientY - rect.top);
+    });
+    drawSunflower(160, 20);
+
+    /* ===================================================
+       5. SCRATCH CARD MECHANICS
+       =================================================== */
+    const sCanvas = document.getElementById('scratchCanvas');
+    const sCtx = sCanvas.getContext('2d');
+    sCtx.fillStyle = '#c0c0c0';
+    sCtx.fillRect(0, 0, sCanvas.width, sCanvas.height);
+    sCtx.fillStyle = '#888888';
+    sCtx.font = "bold 18px Fredoka, sans-serif";
+    sCtx.fillText("✨ SCRATCH HERE ✨", 100, 80);
+
+    let isScratching = false;
+    function scratch(e) {
+      if (!isScratching) return;
+      const rect = sCanvas.getBoundingClientRect();
+      const x = (e.clientX || e.touches[0].clientX) - rect.left;
+      const y = (e.clientY || e.touches[0].clientY) - rect.top;
+      sCtx.globalCompositeOperation = 'destination-out';
+      sCtx.beginPath(); sCtx.arc(x, y, 20, 0, Math.PI * 2); sCtx.fill();
+    }
+    sCanvas.addEventListener('mousedown', () => isScratching = true);
+    sCanvas.addEventListener('mouseup', () => isScratching = false);
+    sCanvas.addEventListener('mousemove', scratch);
+    sCanvas.addEventListener('touchstart', () => isScratching = true);
+    sCanvas.addEventListener('touchend', () => isScratching = false);
+    sCanvas.addEventListener('touchmove', scratch);
+
+    /* ===================================================
+       6. JUKEBOX LYRICS
+       =================================================== */
+    const lyrics = [
+      '"Oh, you complete me like cherry on ice cream..."',
+      '"Like a yellow paper daisy, rare and unfading..."',
+      '"Life is a movie around you lately..."'
+    ];
+    let lyricIdx = 0;
+    function nextLyric() {
+      lyricIdx = (lyricIdx + 1) % lyrics.length;
+      document.getElementById('lyricDisplay').innerText = lyrics[lyricIdx];
+    }
+
+    /* ===================================================
+       7. STRESS BUBBLE WRAP
+       =================================================== */
+    const bubbleContainer = document.getElementById('bubbleWrapper');
+    for (let i = 0; i < 14; i++) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble'; bubble.innerText = '🫧';
+      bubble.onclick = function() {
+        if (this.style.visibility === 'hidden') return;
+        anime({
+          targets: this, scale: [1, 1.5, 0], duration: 300, easing: 'easeOutQuad',
+          complete: () => { this.style.visibility = 'hidden'; }
+        });
+      };
+      bubbleContainer.appendChild(bubble);
+    }
+
+    /* ===================================================
+       8. SOUNDBOARD / TAG TRIGGER
+       =================================================== */
+    function triggerVisualTag(text) {
+      const toast = document.createElement('div');
+      toast.innerText = text;
+      toast.style.cssText = `
+        position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+        background: var(--accent-pink); color: white; padding: 14px 28px; border-radius: 30px;
+        font-family: 'Fredoka'; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15); z-index: 10000;
+      `;
+      document.body.appendChild(toast);
+      anime({
+        targets: toast, translateY: [-10, -40], opacity: [0, 1, 0], duration: 1800, easing: 'easeOutExpo',
+        complete: () => toast.remove()
+      });
+    }
+
+    /* ===================================================
+       9. VENT CHAT CONSOLE
+       =================================================== */
+    function sendVent() {
+      const input = document.getElementById('chatInput');
+      const box = document.getElementById('chatBox');
+      if (!input.value.trim()) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-msg me'; userMsg.innerText = input.value;
+      box.appendChild(userMsg); input.value = ''; box.scrollTop = box.scrollHeight;
+
+      setTimeout(() => {
+        const replyMsg = document.createElement('div');
+        replyMsg.className = 'chat-msg them';
+        replyMsg.innerText = "Listening right here! Tell me everything, zero judgment 🎧✨";
+        box.appendChild(replyMsg); box.scrollTop = box.scrollHeight;
+      }, 500);
+    }
+
+    /* ===================================================
+       10. UNSEAL LETTER
+       =================================================== */
+    function openLetter() {
+      document.getElementById('envelopeCard').style.display = 'none';
+      document.getElementById('letterContent').style.display = 'block';
+    }
+
+    /* ===================================================
+       11. THEME TOGGLE MECHANICS
+       =================================================== */
+    let currentTheme = 'peach';
+    function toggleTheme() {
+      const btn = document.getElementById('themeBtn');
+      if (currentTheme === 'peach') {
+        document.body.setAttribute('data-theme', 'conrad');
+        btn.innerText = '🌸 Peach Bloom'; currentTheme = 'conrad';
+      } else {
+        document.body.removeAttribute('data-theme');
+        btn.innerText = "🌊 Conrad's Sky"; currentTheme = 'peach';
+      }
     }
   </script>
 </body>
